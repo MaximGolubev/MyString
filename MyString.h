@@ -1,27 +1,29 @@
+#ifndef MYSTRING_H_INCLUDED
+#define MYSTRING_H_INCLUDED
 #pragma once
 
 class MyString
 {
 public:
     /// c-tor
-    MyString(const char* rawString = nullptr);
+    MyString(const char* rawString = nullptr);//
 
     /// the rule of five
-    explicit MyString(const MyString& other);
-    MyString(MyString&& other) noexcept;
+    explicit MyString(const MyString& other);//
+    MyString(MyString&& other) noexcept;//
 
-    MyString& operator=(const MyString& other);
-    MyString& operator=(MyString&& other) noexcept;
+    MyString& operator=(const MyString& other);//
+    MyString& operator=(MyString&& other) noexcept;//
 
     ~MyString();
     ///
-    
+
     /// Modifiers
     /*!
         appends string to source
         \param appendedString - string that is inserted at the end
     */
-    void append(const MyString& appendedString);
+    void append(const MyString& appendedString);//
 
     /*!
         inserts string at the passed position <br>
@@ -66,7 +68,7 @@ public:
     bool isEmpty() const;
 
     /*!
-        get non-modified raw string 
+        get non-modified raw string
         \return c-style string
     */
     const char* rawString() const;
@@ -108,3 +110,6 @@ private:
     char* _data;
     unsigned int _size;
 };
+
+
+#endif // MYSTRING_H_INCLUDED
