@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
-#include <algorithm>
+#include <utility>
 
 MyString::MyString(const char* rawString) {
     if (rawString) {
@@ -145,7 +145,8 @@ unsigned int MyString::find(const MyString& substring, unsigned int pos) {
 int MyString::compare(const MyString& comparableString) const {
     if (_size != comparableString._size) {
         return _size - comparableString._size;
-    } else {
+    }
+    else {
         for (size_t i = 0; i < _size; ++i) {
             if (_data[i] < comparableString[i]) {
                 return -1;
