@@ -65,10 +65,7 @@ MyString& MyString::operator+(const MyString& appendedString) {
 }
 
 void MyString::append(const MyString& appendedString) {
-    const size_t newSize = _size + appendedString._size;
-    _data = (char*)realloc(_data, newSize);
-    memcpy((_data + _size), appendedString._data, newSize - _size);
-    _size = newSize;
+    this->insert(_size, appendedString);
 }
 
 MyString::~MyString() {
@@ -96,8 +93,11 @@ void MyString::erase(unsigned int pos, unsigned int count) {
     for (size_t i = pos; i < newSize; ++i) {
         _data[i] = _data[i + count];
     }
-    _data = (char*)realloc(_data, newSize);
+    char* newData = new char[newSize];
+    memcpy(newData, _data, newSize);
+    std::swap(newData, _data);
     _size = newSize;
+    delete[] newData;
 }
 
 unsigned int MyString::size() const {
