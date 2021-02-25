@@ -1,7 +1,6 @@
 #include "MyString.h"
 
 #include <cassert>
-#include <cstdlib>
 #include <cstring>
 #include <utility>
 
