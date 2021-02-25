@@ -38,6 +38,9 @@ MyString& MyString::operator=(const MyString& other) {
 MyString& MyString::operator=(MyString&& other) noexcept {
     std::swap(_size, other._size);
     std::swap(_data, other._data);
+    delete[] other._data;
+    other._data = nullptr;
+    other._size = 0;
     return *this;
 }
 
