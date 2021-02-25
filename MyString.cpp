@@ -27,9 +27,11 @@ MyString::MyString(MyString&& other) noexcept {
 }
 
 MyString& MyString::operator=(const MyString& other) {
-    MyString copy(other);
-    std::swap(_size, copy._size);
-    std::swap(_data, copy._data);
+    if (this != &other) {
+        MyString copy(other);
+        std::swap(_size, copy._size);
+        std::swap(_data, copy._data);
+    }
     return *this;
 }
 
