@@ -19,10 +19,8 @@ MyString::MyString(const MyString& other) {
 }
 
 MyString::MyString(MyString&& other) noexcept {
-    _size = other._size;
-    _data = other._data;
-    other._size = 0;
-    other._data = nullptr;
+    _data = std::exchange(other._data, nullptr);
+    _size = std::exchange(other._size, 0);
 }
 
 MyString& MyString::operator=(const MyString& other) {
@@ -35,12 +33,11 @@ MyString& MyString::operator=(const MyString& other) {
 }
 
 MyString& MyString::operator=(MyString&& other) noexcept {
-    if (this == &other) {
-        return *this;
+    if (this != &other) {
+        delete[] _data;
+        _data = std::exchange(other._data, nullptr);
+        _size = std::exchange(other._size, 0);
     }
-    delete[] _data;
-    _data = std::exchange(other._data, nullptr);
-    _size = std::exchange(other._size, 0);
     return *this;
 }
 
