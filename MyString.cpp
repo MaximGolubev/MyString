@@ -7,6 +7,9 @@
 
 MyString::MyString(const char* rawString) {
     _size = 0;
+    if (rawString == nullptr) {
+        return;
+    }
     for (int i = 0; rawString[i] != '\0'; ++i) {
         ++_size;
     }
