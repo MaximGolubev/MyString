@@ -10,6 +10,10 @@ MyString::MyString(const char* rawString) {
         _data = new char[_size];
         memcpy(_data, rawString, _size);
     }
+    else {
+        _data = nullptr;
+        _size = 0;
+    }
 }
 
 MyString::MyString(const MyString& other) {
