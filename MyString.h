@@ -1,110 +1,128 @@
 #pragma once
 
-class MyString
-{
-public:
-    /// c-tor
-    MyString(const char* rawString = nullptr);
+namespace MyStringNS {
 
-    /// the rule of five
-    explicit MyString(const MyString& other);
-    MyString(MyString&& other) noexcept;
+    class MyString
+    {
+    public:
+        /// c-tor
+        MyString(const char* rawString = nullptr);
 
-    MyString& operator=(const MyString& other);
-    MyString& operator=(MyString&& other) noexcept;
+        /// the rule of five
+        explicit MyString(const MyString& other);
+        MyString(MyString&& other) noexcept;
 
-    ~MyString();
-    ///
+        MyString& operator=(const MyString& other);
+        MyString& operator=(MyString&& other) noexcept;
 
-    /// Modifiers
-    /*!
-        appends string to source
-        \param appendedString - string that is inserted at the end
-    */
-    void append(const MyString& appendedString);
+        ~MyString();
+        ///
 
-    /*!
-        inserts string at the passed position <br>
-        \param pos - insertion index
-        \param insertedString - string that is inserted at the pos
-    */
-    void insert(unsigned int pos, const MyString& insertedString);
+        /// Modifiers
+        /*!
+            appends string to source
+            \param appendedString - string that is inserted at the end
+        */
+        void append(const MyString& appendedString);
 
-    /*!
-        clear string
-    */
-    void clear();
+        /*!
+            inserts string at the passed position <br>
+            \param pos - insertion index
+            \param insertedString - string that is inserted at the pos
+        */
+        void insert(unsigned int pos, const MyString& insertedString);
 
-    /*!
-        removes count characters from the string starting from pos index. <br>
-        if count > size - pos then count := size - pos
-        \param pos - erasing index
-        \param count - count of characters to remove
-    */
-    void erase(unsigned int pos, unsigned int count);
-    ///
+        /*!
+            clear string
+        */
+        void clear();
 
-    /// Accessors
-    /*!
-        access to character at the idx
-        \param idx - character index
-        \return reference to character
-    */
-    char& at(unsigned int idx);
-    const char& at(unsigned int idx) const;
+        /*!
+            removes count characters from the string starting from pos index. <br>
+            if count > size - pos then count := size - pos
+            \param pos - erasing index
+            \param count - count of characters to remove
+        */
+        void erase(unsigned int pos, unsigned int count);
+        ///
 
-    /*!
-        get string sise
-        \return count of characters
-    */
-    unsigned int size() const;
+        /// Accessors
+        /*!
+            access to character at the idx
+            \param idx - character index
+            \return reference to character
+        */
+        char& at(unsigned int idx);
+        const char& at(unsigned int idx) const;
 
-    /*!
-        check that string is empty
-        \return true if string is empty else false
-    */
-    bool isEmpty() const;
+        /*!
+            get string sise
+            \return count of characters
+        */
+        unsigned int size() const;
 
-    /*!
-        get non-modified raw string
-        \return c-style string
-    */
-    const char* rawString() const;
-    ///
+        /*!
+            check that string is empty
+            \return true if string is empty else false
+        */
+        bool isEmpty() const;
 
-    /// Search
-    unsigned int find(const MyString& substring, unsigned int pos = 0);
-    ///
+        /*!
+            get non-modified raw string
+            \return c-style string
+        */
+        const char* rawString() const;
+        ///
 
-    /// Compares
-    /*!
-        analogue of strcmp
-    */
-    int compare(const MyString& comparableString) const;
-    ///
+        /// Search
+        unsigned int find(const MyString& substring, unsigned int pos = 0);
+        ///
 
-    /// Overloads
-    /*!
-        see at-methods
-    */
-    char& operator[](unsigned int idx);
-    const char& operator[](unsigned int idx) const;
+        /// Compares
+        /*!
+            analogue of strcmp
+        */
+        int compare(const MyString& comparableString) const;
+        ///
 
-    /*!
-        see append-method
-    */
-    MyString& operator+(const MyString& appendedString);
+        /// Overloads
+        /*!
+            see at-methods
+        */
+        char& operator[](unsigned int idx);
+        const char& operator[](unsigned int idx) const;
 
-    /*!
-        see compares section
-    */
-    bool operator==(const MyString& comparableString) const;
-    bool operator!=(const MyString& comparableString) const;
-    bool operator>(const MyString& comparableString) const;
-    bool operator<(const MyString& comparableString) const;
-    bool operator>=(const MyString& comparableString) const;
-    bool operator<=(const MyString& comparableString) const;
-private:
-    char* _data;
-    unsigned int _size;
-};
+        /*!
+            see append-method
+        */
+        MyString& operator+(const MyString& appendedString);
+
+        /*!
+            see compares section
+        */
+        bool operator==(const MyString& comparableString) const;
+        bool operator!=(const MyString& comparableString) const;
+        bool operator>(const MyString& comparableString) const;
+        bool operator<(const MyString& comparableString) const;
+        bool operator>=(const MyString& comparableString) const;
+        bool operator<=(const MyString& comparableString) const;
+    private:
+        StringRepresentation _data;
+        //char* _data;
+        //unsigned int _size;
+    };
+
+    struct StringRepresentation {
+        union StringType {
+            struct Long {
+                char* _data;
+                unsigned int _size;
+            };
+            struct Short {
+                char[sizeof(Long) - sizeof(char)] _data;
+                unsigned char _size;
+            };
+        }
+        bool flag;
+    }
+}
