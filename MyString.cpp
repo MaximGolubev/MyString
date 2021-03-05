@@ -5,8 +5,6 @@
 #include <cstring>
 #include <algorithm>
 
-
-
 MyString::MyString(const char* rawString) {
     _size = 0;
     _data = nullptr;
@@ -23,6 +21,10 @@ MyString::MyString(const char* rawString) {
 }
 
 MyString::MyString(const MyString& other) {
+    if (this == &other) {
+        _size = 0;
+        _data = nullptr;
+    }
     _size = other._size;
     _data = new char[_size];
     for (unsigned int i = 0; i < _size; ++i) {
