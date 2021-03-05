@@ -7,6 +7,7 @@
 
 MyString::MyString(const char* rawString) {
     _size = 0;
+    _data = nullptr;
     if (rawString == nullptr) {
         return;
     }
@@ -44,26 +45,20 @@ MyString& MyString::operator=(const MyString& other) {
 MyString& MyString::operator=(MyString&& other) noexcept {
     std::swap(_size, other._size);
     std::swap(_data, other._data);
+    other._size = 0;
+    delete[] other._data;
+    other._data = nullptr;
     return *this;
 }
 
 MyString::~MyString() {
     _size = 0;
     delete[] _data;
+    _data = nullptr;
 }
 
 void MyString::append(const MyString& appendedString) {
-    unsigned int i = 0;
-    char* newData = new char[_size + appendedString._size];
-    for (; i < _size; ++i) {
-        newData[i] = _data[i];
-    }
-    for (; i < _size + appendedString._size; ++i) {
-        newData[i] = appendedString[i - _size];
-    }
-    _size += appendedString._size;
-    delete[] _data;
-    _data = newData;
+    insert(_size, appendedString);
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
@@ -92,6 +87,10 @@ void MyString::clear() {
 
 void MyString::erase(unsigned int pos, unsigned int charCount) {
     assert(pos <= size());
+    if (pos == 0 && charCount >= _size) {
+        clear();
+        return;
+    }
     if (charCount > _size - pos) {
         charCount = _size - pos;
     }
@@ -193,20 +192,20 @@ bool MyString::operator!=(const MyString& comparableString) const {
 }
 
 bool MyString::operator>(const MyString& comparableString) const {
-    return ((this->compare(comparableString) == 1)? true : false);
+    return (this->compare(comparableString) == 1);
 }
 
 bool MyString::operator<(const MyString& comparableString) const {
-    return ((this->compare(comparableString) == -1)? true : false);
+    return (this->compare(comparableString) == -1);
 }
 
 bool MyString::operator>=(const MyString& comparableString) const {
-    return ((this->compare(comparableString) == 1
-          || this->compare(comparableString) == 0)? true : false);
+    return (this->compare(comparableString) == 1
+          || this->compare(comparableString) == 0);
 }
 
 bool MyString::operator<=(const MyString& comparableString) const {
-    return ((this->compare(comparableString) == -1
-          || this->compare(comparableString) == 0)? true : false);
+    return (this->compare(comparableString) == -1
+          || this->compare(comparableString) == 0);
 }
 
