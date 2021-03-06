@@ -189,20 +189,20 @@ unsigned int MyString::find(const MyString& substring, unsigned int pos) {
 }
 
 int MyString::compare(const MyString& comparableString) const {
-    if (size() != comparableString.size()) {
-        return size() - comparableString.size();
-    }
-    else {
-        for (size_t i = 0; i < size(); ++i) {
-            if ((*this)[i] < comparableString[i]) {
-                return -1;
-            }
-            else if ((*this)[i] > comparableString[i]) {
-                return 1;
-            }
+    size_t minSize =  size() > comparableString.size()
+                      ? comparableString.size()
+                      : size();
+
+    for (size_t i = 0; i < minSize; ++i) {
+        if ((*this)[i] < comparableString[i]) {
+            return -1;
         }
-        return 0;
+        else if ((*this)[i] > comparableString[i]) {
+            return 1;
+        }
     }
+    return size() - comparableString.size();
+
 }
 
 bool MyString::operator!=(const MyString& comparableString) const {
