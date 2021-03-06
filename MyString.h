@@ -139,5 +139,5 @@ public:
     bool operator>=(const MyString& comparableString) const;
     bool operator<=(const MyString& comparableString) const;
 private:
-    hiddenClass::StringData _data;
+    StringData _data;
 };
