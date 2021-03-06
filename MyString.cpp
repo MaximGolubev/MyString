@@ -125,7 +125,6 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
     memcpy(str.getString() + pos, insertedString._data.getString(), insertedString.size());
     memcpy(str.getString() + pos + insertedString.size(), _data.getString() + pos, size() - pos);
     std::swap(str, _data);
-    str.remove();
 }
 
 void MyString::clear() {
@@ -140,7 +139,6 @@ void MyString::erase(unsigned int pos, unsigned int count) {
     StringData str;
     str.save(_data.getString(), newSize);
     std::swap(str, _data);
-    str.remove();
 }
 
 unsigned int MyString::size() const {
