@@ -1,6 +1,22 @@
 #pragma once
 
+#include <iostream>
+
 namespace MyStringNS {
+
+    struct StringRepresentation {
+        union Type {
+            struct Long {
+                char* _data;
+                std::size_t _size;
+            } longString;
+            struct Short {
+                char _data[sizeof(Long) - sizeof(char)];
+                unsigned char _size;
+            } shortString;
+        } stringType;
+        bool isLong;
+    };
 
     class MyString
     {
@@ -107,22 +123,9 @@ namespace MyStringNS {
         bool operator>=(const MyString& comparableString) const;
         bool operator<=(const MyString& comparableString) const;
     private:
-        StringRepresentation _data;
+        StringRepresentation _type;
         //char* _data;
         //unsigned int _size;
     };
 
-    struct StringRepresentation {
-        union StringType {
-            struct Long {
-                char* _data;
-                unsigned int _size;
-            };
-            struct Short {
-                char[sizeof(Long) - sizeof(char)] _data;
-                unsigned char _size;
-            };
-        }
-        bool flag;
-    }
 }
