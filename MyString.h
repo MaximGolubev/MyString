@@ -1,7 +1,41 @@
 #pragma once
 
-class MyString
-{
+#include <cstring>
+
+class MyString;
+
+namespace {
+    class StringData {
+        struct Long {
+            char* data;
+            size_t size;
+        };
+        struct Short {
+            char data[sizeof(Long) - 1];
+            char size;
+        };
+        union Data {
+            Long _long;
+            Short _short;
+        } data;
+
+        enum {
+            _shortFlag = 1,
+            _longFlag = 0
+        } flag;
+        size_t maxShortSize = sizeof(Long) - 1;
+    public:
+        StringData();
+        void save(const char* rawString, size_t size = sizeof(Long) - 1);
+        size_t getSize() const;
+        const char* getString() const;
+        char* getString();
+        void remove();
+    };
+}
+
+
+class MyString {
 public:
     /// c-tor
     MyString(const char* rawString = nullptr);
@@ -15,7 +49,7 @@ public:
 
     ~MyString();
     ///
-    
+
     /// Modifiers
     /*!
         appends string to source
@@ -66,7 +100,7 @@ public:
     bool isEmpty() const;
 
     /*!
-        get non-modified raw string 
+        get non-modified raw string
         \return c-style string
     */
     const char* rawString() const;
@@ -105,6 +139,5 @@ public:
     bool operator>=(const MyString& comparableString) const;
     bool operator<=(const MyString& comparableString) const;
 private:
-    char* _data;
-    unsigned int _size;
+    hiddenClass::StringData _data;
 };

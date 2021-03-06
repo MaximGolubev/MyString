@@ -4,15 +4,60 @@
 #include <cstring>
 #include <utility>
 
+// >> StringData implementation
+StringData::StringData() {
+    memset(&data, '\0', maxShortSize);
+}
+
+void StringData::save(const char* rawString, size_t size) {
+    if (size > maxShortSize) {
+        flag = _longFlag;
+        data._long.size = size;
+        data._long.data = new char[size];
+        memcpy(data._long.data, rawString, size);
+    }
+    else {
+        flag = _shortFlag;
+        data._short.size = size;
+        memcpy(data._short.data, rawString, size);
+    }
+}
+
+
+size_t StringData::getSize() const {
+    if (flag == _shortFlag) {
+        return data._short.size;
+    }
+    return data._long.size;
+}
+
+const char* StringData::getString() const {
+    return flag == _shortFlag ? data._short.data : data._long.data;
+}
+
+char* StringData::getString() {
+    return flag == _shortFlag ? data._short.data : data._long.data;
+}
+
+void StringData::remove() {
+    if (flag == _longFlag) {
+        delete[] data._long.data;
+        data._long.data = nullptr;
+        data._long.size = 0;
+    }
+    else {
+        memset(data._short.data, '\0', maxShortSize);
+        data._short.size = 0;
+    }
+}
+// << StringData implementation
+
+
 MyString::MyString(const char* rawString) {
     if (rawString) {
         _size = strlen(rawString);
         _data = new char[_size];
         memcpy(_data, rawString, _size);
-    }
-    else {
-        _data = nullptr;
-        _size = 0;
     }
 }
 
