@@ -55,27 +55,24 @@ void StringData::remove() {
 
 MyString::MyString(const char* rawString) {
     if (rawString) {
-        _size = strlen(rawString);
-        _data = new char[_size];
-        memcpy(_data, rawString, _size);
+        _data.save(rawString, strlen(rawString));
     }
 }
 
 MyString::MyString(const MyString& other) {
-    _size = other._size;
-    _data = new char[_size];
-    memcpy(_data, other._data, _size);
+    _data.save(other._data.getString(),
+               other._data.getSize());
 }
 
 MyString::MyString(MyString&& other) noexcept {
-    _data = std::exchange(other._data, nullptr);
-    _size = std::exchange(other._size, 0);
+    _data = other._data;
+    other._data.save("");
+    other._data.remove();
 }
 
 MyString& MyString::operator=(const MyString& other) {
     if (this != &other) {
         MyString copy(other);
-        std::swap(_size, copy._size);
         std::swap(_data, copy._data);
     }
     return *this;
@@ -83,21 +80,22 @@ MyString& MyString::operator=(const MyString& other) {
 
 MyString& MyString::operator=(MyString&& other) noexcept {
     if (this != &other) {
-        delete[] _data;
-        _data = std::exchange(other._data, nullptr);
-        _size = std::exchange(other._size, 0);
+        _data.remove();
+        _data = other._data;
+        other._data.save("");
+        other._data.remove();
     }
     return *this;
 }
 
 char& MyString::at(const unsigned int idx) {
     assert(idx < size());
-    return _data[idx];
+    return (_data.getString()[idx]);
 }
 
 const char& MyString::at(const unsigned int idx) const {
     assert(idx < size());
-    return _data[idx];
+    return _data.getString()[idx];
 }
 
 char& MyString::operator[](const unsigned int idx) {
@@ -114,53 +112,52 @@ MyString& MyString::operator+(const MyString& appendedString) {
 }
 
 void MyString::append(const MyString& appendedString) {
-    this->insert(_size, appendedString);
+    this->insert(size(), appendedString);
 }
 
 MyString::~MyString() {
-    delete[] _data;
+    _data.remove();
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
-    char* newStr = new char[_size + insertedString._size];
-    memcpy(newStr, _data, pos);
-    memcpy(newStr + pos, insertedString._data, insertedString._size);
-    memcpy(newStr + pos + insertedString._size, _data + pos, _size - pos);
-    std::swap(newStr, _data);
-    delete[] newStr;
-    _size += insertedString._size;
+    StringData str;
+    str.save(_data.getString(), size() + insertedString.size());
+    memcpy(str.getString() + pos, insertedString._data.getString(), insertedString.size());
+    memcpy(str.getString() + pos + insertedString.size(), _data.getString() + pos, size() - pos);
+    std::swap(str, _data);
+    str.remove();
 }
 
 void MyString::clear() {
-    _size = 0;
-    delete[] _data;
-    _data = nullptr;
+    _data.remove();
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
-    unsigned int newSize = _size > count ? _size - count : pos - 1;
+    unsigned int newSize = size() > count ? size() - count : pos - 1;
     for (size_t i = pos; i < newSize; ++i) {
-        _data[i] = _data[i + count];
+        (*this)[i] = (*this)[i + count];
     }
-    char* newData = new char[newSize];
-    memcpy(newData, _data, newSize);
-    std::swap(newData, _data);
-    _size = newSize;
-    delete[] newData;
+    StringData str;
+    str.save(_data.getString(), newSize);
+    std::swap(str, _data);
+    str.remove();
 }
 
 unsigned int MyString::size() const {
-    return _size;
+    return _data.getSize();
 }
 
 bool MyString::isEmpty() const {
-    return !_size;
+    return !size();
 }
 
+// TODO: Перегрузить оператор <<
+//  Тут никак не избавиться от выделения памяти?
+//  Кроме как подменивать data у this на новый StringData объект.
 const char* MyString::rawString() const {
-    char* str = new char[_size + 1];
-    memcpy(str, _data, _size);
-    str[_size] = '\0';
+    char* str = new char[size() + 1];
+    memcpy(str, _data.getString(), size());
+    str[size()] = '\0';
     return str;
 }
 
@@ -170,11 +167,11 @@ unsigned int MyString::find(const MyString& substring, unsigned int pos) {
     }
     unsigned int res = -1;
     size_t count = 0;
-    const size_t substrSize = substring._size;
-    const size_t strSize = this->_size;
+    const size_t substrSize = substring.size();
+    const size_t strSize = this->size();
     for (int i = strSize - (substrSize - 1) - 1; i >= (int)pos; --i) {
         for (int j = i; j < strSize; ++j) {
-            if (_data[j] == substring[count]) {
+            if ((*this)[j] == substring[count]) {
                 count++;
             }
             else {
@@ -192,15 +189,15 @@ unsigned int MyString::find(const MyString& substring, unsigned int pos) {
 }
 
 int MyString::compare(const MyString& comparableString) const {
-    if (_size != comparableString._size) {
-        return _size - comparableString._size;
+    if (size() != comparableString.size()) {
+        return size() - comparableString.size();
     }
     else {
-        for (size_t i = 0; i < _size; ++i) {
-            if (_data[i] < comparableString[i]) {
+        for (size_t i = 0; i < size(); ++i) {
+            if ((*this)[i] < comparableString[i]) {
                 return -1;
             }
-            else if (_data[i] > comparableString[i]) {
+            else if ((*this)[i] > comparableString[i]) {
                 return 1;
             }
         }
@@ -231,4 +228,3 @@ bool MyString::operator>=(const MyString& comparableString) const {
 bool MyString::operator<=(const MyString& comparableString) const {
     return this->compare(comparableString) <= 0;
 }
-
