@@ -3,9 +3,11 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+#include <algorithm>
 
 MyString::MyString(const char* rawString) {
     this->_size = 0;
+    this->_data = nullptr;
     if (rawString != nullptr) {
         this->_size = std::strlen(rawString);
         this->_data = new char[this->_size];
@@ -32,18 +34,23 @@ MyString::MyString(MyString&& other) noexcept {
 
 MyString& MyString::operator=(const MyString& other) {
     this->_size = other._size;
-    this->_data = new char[other._size];
-    for (size_t i = 0; i < this->_size; i++) {
-        this->_data[i] = other._data[i];
+    delete[] this->_data;
+    this->_data = nullptr;
+    if (other._size != 0) {
+        this->_data = new char[other._size];
+        for (size_t i = 0; i < this->_size; i++) {
+            this->_data[i] = other._data[i];
+        }
     }
     return *this;
 }
 
 MyString& MyString::operator=(MyString&& other) noexcept {
     this->_size = other._size;
-    this->_data = other._data;
-    other._size = 0;
+    std::swap(this->_data, other._data);
+    delete[] other._data; 
     other._data = nullptr;
+    other._size = 0;
     return *this;
 }
     
@@ -65,16 +72,7 @@ const char& MyString::at(const unsigned int idx) const {
 
 
 void MyString::append(const MyString& appendedString) {
-    char* newData = new char[this->_size + appendedString._size];
-    for (size_t i = 0; i < this->_size; i++) {
-        newData[i] = this->_data[i];
-    }
-    for (size_t i = this->_size; i < this->_size + appendedString._size; i++) {
-        newData[i] = appendedString[i - this->_size];
-    }
-    delete[] this->_data;
-    this->_data = newData;
-    this->_size += appendedString._size;
+    this->insert(this->_size, appendedString);
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
@@ -115,7 +113,10 @@ void MyString::erase(unsigned int pos, unsigned int count) {
     }
     this->_size -= realCount;
     delete[] this->_data;
-    this->_data = newData;
+    this->_data = nullptr;
+    if (this->_size != 0) {
+        this->_data = newData;
+    }
 }
     
 unsigned int MyString::size() const { 
