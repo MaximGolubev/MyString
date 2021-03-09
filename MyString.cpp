@@ -66,6 +66,7 @@ MyStringNS::MyString::MyString(MyString&& other) noexcept {
 MyStringNS::MyString& MyStringNS::MyString::operator=(const MyString& other) {
     _type.isLong = other._type.isLong;
     if (_type.isLong) {
+        delete[] _type.stringType.longString._data;
         _type.stringType.longString._size = other.size();
         _type.stringType.longString._data = new char[size()];
     }
