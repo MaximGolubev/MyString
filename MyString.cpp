@@ -90,7 +90,6 @@ MyStringNS::MyString& MyStringNS::MyString::operator=(MyString&& other) noexcept
     }
     else {
         _type.isLong = false;
-            std::cout << "here" << std::endl;
         _type.stringType.shortString._size = other.size();
         for (unsigned int i = 0; i < size(); ++i) {
             (*this)[i] = other[i];
