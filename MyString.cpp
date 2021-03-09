@@ -10,43 +10,43 @@ MyString::MyString(const char* rawString) {
     this->_data = nullptr;
     if (rawString != nullptr) {
         this->_size = std::strlen(rawString);
-        this->_data = new char[this->_size];
-        for (size_t i = 0; i < this->_size; i++) {
-            this->_data[i] = rawString[i];
+        this->_data = new char[this->size()];
+        for (size_t i = 0; i < this->size(); i++) {
+            this->at(i) = rawString[i];
         }
     }
 }
 
 MyString::MyString(const MyString& other) {
-    this->_size = other._size;
-    this->_data = new char[other._size];
-    for (size_t i = 0; i < this->_size; i++) {
-        this->_data[i] = other._data[i];
+    this->_size = other.size();
+    this->_data = new char[other.size()];
+    for (size_t i = 0; i < this->size(); i++) {
+        this->at(i) = other[i];
     }
 }
 
 MyString::MyString(MyString&& other) noexcept {
-    this->_size = other._size;
+    this->_size = other.size();
     this->_data = other._data;
     other._size = 0;
     other._data = nullptr;
 }
 
 MyString& MyString::operator=(const MyString& other) {
-    this->_size = other._size;
+    this->_size = other.size();
     delete[] this->_data;
     this->_data = nullptr;
-    if (other._size != 0) {
-        this->_data = new char[other._size];
-        for (size_t i = 0; i < this->_size; i++) {
-            this->_data[i] = other._data[i];
+    if (!other.isEmpty()) {
+        this->_data = new char[other.size()];
+        for (size_t i = 0; i < this->size(); i++) {
+            this->at(i) = other[i];
         }
     }
     return *this;
 }
 
 MyString& MyString::operator=(MyString&& other) noexcept {
-    this->_size = other._size;
+    this->_size = other.size();
     std::swap(this->_data, other._data);
     delete[] other._data; 
     other._data = nullptr;
@@ -72,22 +72,22 @@ const char& MyString::at(const unsigned int idx) const {
 
 
 void MyString::append(const MyString& appendedString) {
-    this->insert(this->_size, appendedString);
+    this->insert(size(), appendedString);
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
-    assert(pos <= this->_size);
-    char* newData = new char[this->_size + insertedString._size];
-    for (size_t i = 0; i < this->_size; i++) {
-        newData[i] = this->_data[i];
+    assert(pos <= this->size());
+    char* newData = new char[this->size() + insertedString.size()];
+    for (size_t i = 0; i < this->size(); i++) {
+        newData[i] = this->at(i);
     }
-    for (int i = (int)(this->_size + insertedString._size) - 1; i >= (int)(pos + insertedString._size); i--) {
-        newData[i] = this->_data[i - insertedString._size];
+    for (int i = (int)(this->size() + insertedString.size()) - 1; i >= (int)(pos + insertedString.size()); i--) {
+        newData[i] = this->at(i - insertedString.size());
     }
-    for (size_t i = pos; i < pos + insertedString._size; i++) {
+    for (size_t i = pos; i < pos + insertedString.size(); i++) {
         newData[i] = insertedString[i - pos];
     }
-    this->_size += insertedString._size;
+    this->_size += insertedString.size();
     delete[] this->_data;
     this->_data = newData;
 }
@@ -99,22 +99,22 @@ void MyString::clear() {
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
-    assert(pos <= this->_size);
+    assert(pos <= this->size());
     size_t realCount = count;
-    if (count > this->_size - pos) {
-        realCount = this->_size - pos;
+    if (count > this->size() - pos) {
+        realCount = this->size() - pos;
     }
-    char* newData = new char[this->_size - realCount];
-    for (size_t i = 0; i < this->_size - realCount; i++) {
-        newData[i] = this->_data[i];
+    char* newData = new char[this->size() - realCount];
+    for (size_t i = 0; i < this->size() - realCount; i++) {
+        newData[i] = this->at(i);
     }
-    for (int i = (int)(this->_size - realCount) - 1; i >= (int)pos; i--) {
-        newData[i] = this->_data[i + realCount];
+    for (int i = (int)(this->size() - realCount) - 1; i >= (int)pos; i--) {
+        newData[i] = this->at(i + realCount);
     }
     this->_size -= realCount;
     delete[] this->_data;
     this->_data = nullptr;
-    if (this->_size != 0) {
+    if (this->size() != 0) {
         this->_data = newData;
     }
 }
@@ -128,20 +128,20 @@ bool MyString::isEmpty() const {
 }
 
 const char* MyString::rawString() const {
-    char* resString = new char[this->_size + 1];
-    for (size_t i = 0; i < this->_size; i++) {
-        resString[i] = this->_data[i];
+    char* resString = new char[this->size() + 1];
+    for (size_t i = 0; i < this->size(); i++) {
+        resString[i] = this->at(i);
     }
-    resString[this->_size] = '\0';
+    resString[this->size()] = '\0';
     return resString;
 }
 
 unsigned int MyString::find(const MyString& substring, const unsigned int pos) {
-    assert(pos <= this->_size);
-    for (size_t i = pos; i < this->_size - substring._size; i++) {
+    assert(pos <= this->size());
+    for (size_t i = pos; i < this->size() - substring.size() + 1; i++) {
         bool equal = true;
-        for (size_t j = i; j < i + substring._size; j++) {
-            if (this->_data[j] != substring._data[j - i]) {
+        for (size_t j = i; j < i + substring.size(); j++) {
+            if (this->at(j) != substring[j - i]) {
                 equal = false;
                 break;
             }
@@ -154,15 +154,15 @@ unsigned int MyString::find(const MyString& substring, const unsigned int pos) {
 }
     
 int MyString::compare(const MyString& comparableString) const {
-    size_t count = comparableString._size;
-    if (this->_size != comparableString._size) {
-        return this->_size < comparableString._size ? -1 : 1;
+    size_t count = comparableString.size();
+    if (this->size() != comparableString.size()) {
+        return this->size() < comparableString.size() ? -1 : 1;
     }
     for (size_t i = 0; i < count; i++) {
-        if (this->_data[i] < comparableString._data[i]) {
+        if (this->at(i) < comparableString[i]) {
             return -1;
         }
-        else if (this->_data[i] > comparableString._data[i]) {
+        else if (this->at(i) > comparableString[i]) {
             return 1;
         }
     }
