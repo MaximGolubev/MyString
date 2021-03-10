@@ -66,11 +66,6 @@ char& StringData::operator[](size_t i) {
     return _getString()[i];
 }
 
-void StringData::unleash() {
-    if (_flag == longFlag) {
-        _data.l.data = nullptr;
-    }
-}
 // << StringData implementation
 
 
