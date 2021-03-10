@@ -107,5 +107,5 @@ public:
     bool operator>=(const MyString& comparableString) const;
     bool operator<=(const MyString& comparableString) const;
 private:
-    sso::StringData _data;
+    sso::string _data;
 };

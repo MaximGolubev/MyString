@@ -1,15 +1,15 @@
 #include "sso.h"
 
 
-sso::StringData::StringData() {
+sso::string::string() {
     memset(&_data, '\0', _maxShortSize);
 }
 
-sso::StringData::StringData(const char* rawString, size_t size) {
+sso::string::string(const char* rawString, size_t size) {
     save(rawString, size);
 }
 
-void sso::StringData::save(const char* rawString, size_t size) {
+void sso::string::save(const char* rawString, size_t size) {
     if (_data.l.data) {
         remove();
     }
@@ -26,22 +26,22 @@ void sso::StringData::save(const char* rawString, size_t size) {
     }
 }
 
-size_t sso::StringData::getSize() const {
+size_t sso::string::getSize() const {
     if (_flag == shortFlag) {
         return _data.s.size;
     }
     return _data.l.size;
 }
 
-char* sso::StringData::_getString() {
+char* sso::string::_getString() {
     return _flag == shortFlag ? _data.s.data : _data.l.data;
 }
 
-const char* sso::StringData::_getString() const {
+const char* sso::string::_getString() const {
     return _flag == shortFlag ? _data.s.data : _data.l.data;
 }
 
-void sso::StringData::remove() {
+void sso::string::remove() {
     if (_flag == longFlag) {
         delete[] _data.l.data;
         _data.l.data = nullptr;
@@ -53,15 +53,15 @@ void sso::StringData::remove() {
     }
 }
 
-const char& sso::StringData::operator[](size_t i) const {
+const char& sso::string::operator[](size_t i) const {
     return _getString()[i];
 }
 
-char& sso::StringData::operator[](size_t i) {
+char& sso::string::operator[](size_t i) {
     return _getString()[i];
 }
 
-void sso::StringData::unleash() {
+void sso::string::unleash() {
     if (_flag == longFlag) {
         _data.l.data = nullptr;
     }

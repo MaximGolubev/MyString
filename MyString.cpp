@@ -73,7 +73,7 @@ MyString::~MyString() {
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
     assert(pos <= size());
-    sso::StringData str(&_data[0], size() + insertedString.size());
+    sso::string str(&_data[0], size() + insertedString.size());
     memcpy(&str[0] + pos, &insertedString._data[0], insertedString.size());
     memcpy(&str[0] + pos + insertedString.size(), &_data[0] + pos, size() - pos);
     std::swap(str, _data);
@@ -90,7 +90,7 @@ void MyString::erase(unsigned int pos, unsigned int count) {
     for (size_t i = pos; i < newSize; ++i) {
         (*this)[i] = (*this)[i + count];
     }
-    sso::StringData str(&_data[0], newSize);
+    sso::string str(&_data[0], newSize);
     std::swap(str, _data);
     str.remove();
 }

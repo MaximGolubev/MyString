@@ -3,7 +3,7 @@
 #include <cstring>
 
 namespace sso {
-    class StringData {
+    class string {
         struct Long {
             char* data;
             size_t size;
@@ -26,8 +26,8 @@ namespace sso {
         const char* _getString() const;
         char* _getString();
     public:
-        StringData();
-        StringData(const char* rawString, size_t size);
+        string();
+        string(const char* rawString, size_t size);
         void save(const char* rawString, size_t size = sizeof(Long) - 1);
         size_t getSize() const;
         char& operator[](size_t i);
