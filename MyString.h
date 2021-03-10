@@ -12,18 +12,18 @@ namespace {
         };
         struct Short {
             char data[sizeof(Long) - 1];
-            char size;
+            unsigned char size;
         };
         union Data {
-            Long _long;
-            Short _short;
-        } data;
+            Long l;
+            Short s;
+        } _data;
 
         enum {
-            _shortFlag = 1,
-            _longFlag = 0
-        } flag;
-        size_t maxShortSize = sizeof(Long) - 1;
+            shortFlag = 1,
+            longFlag = 0
+        } _flag;
+        const static size_t _maxShortSize = sizeof(Long) - 1;
     public:
         StringData();
         void save(const char* rawString, size_t size = sizeof(Long) - 1);
