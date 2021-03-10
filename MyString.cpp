@@ -10,7 +10,14 @@ StringData::StringData() {
     memset(&_data, '\0', _maxShortSize);
 }
 
+StringData::StringData(const char* rawString, size_t size) {
+    save(rawString, size);
+}
+
 void StringData::save(const char* rawString, size_t size) {
+    if (_data.l.data) {
+        remove();
+    }
     if (size > _maxShortSize) {
         _flag = longFlag;
         _data.l.size = size;
@@ -23,7 +30,6 @@ void StringData::save(const char* rawString, size_t size) {
         memcpy(_data.s.data, rawString, size);
     }
 }
-
 
 size_t StringData::getSize() const {
     if (_flag == shortFlag) {
@@ -60,9 +66,11 @@ char& StringData::operator[](size_t i) {
     return _getString()[i];
 }
 
-
-
-
+void StringData::unleash() {
+    if (_flag == longFlag) {
+        _data.l.data = nullptr;
+    }
+}
 // << StringData implementation
 
 
@@ -133,8 +141,8 @@ MyString::~MyString() {
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
-    StringData str;
-    str.save(&_data[0], size() + insertedString.size());
+    assert(pos <= size());
+    StringData str(&_data[0], size() + insertedString.size());
     memcpy(&str[0] + pos, &insertedString._data[0], insertedString.size());
     memcpy(&str[0] + pos + insertedString.size(), &_data[0] + pos, size() - pos);
     std::swap(str, _data);
@@ -146,12 +154,12 @@ void MyString::clear() {
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
+    assert(pos <= size());
     unsigned int newSize = size() > count ? size() - count : pos - 1;
     for (size_t i = pos; i < newSize; ++i) {
         (*this)[i] = (*this)[i + count];
     }
-    StringData str;
-    str.save(&_data[0], newSize);
+    StringData str(&_data[0], newSize);
     std::swap(str, _data);
     str.remove();
 }
