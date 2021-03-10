@@ -66,6 +66,11 @@ char& StringData::operator[](size_t i) {
     return _getString()[i];
 }
 
+void StringData::unleash() {
+    if (_flag == longFlag) {
+        _data.l.data = nullptr;
+    }
+}
 // << StringData implementation
 
 
@@ -82,7 +87,7 @@ MyString::MyString(const MyString& other) {
 
 MyString::MyString(MyString&& other) noexcept {
     _data = other._data;
-    other._data.save("");
+    other._data.unleash();
     other._data.remove();
 }
 
@@ -98,7 +103,7 @@ MyString& MyString::operator=(MyString&& other) noexcept {
     if (this != &other) {
         _data.remove();
         _data = other._data;
-        other._data.save("");
+        other._data.unleash();
         other._data.remove();
     }
     return *this;
