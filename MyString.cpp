@@ -4,52 +4,65 @@
 #include <cstring>
 #include <utility>
 
+
 // >> StringData implementation
 StringData::StringData() {
-    memset(&data, '\0', maxShortSize);
+    memset(&_data, '\0', _maxShortSize);
 }
 
 void StringData::save(const char* rawString, size_t size) {
-    if (size > maxShortSize) {
-        flag = _longFlag;
-        data._long.size = size;
-        data._long.data = new char[size];
-        memcpy(data._long.data, rawString, size);
+    if (size > _maxShortSize) {
+        _flag = longFlag;
+        _data.l.size = size;
+        _data.l.data = new char[size];
+        memcpy(_data.l.data, rawString, size);
     }
     else {
-        flag = _shortFlag;
-        data._short.size = size;
-        memcpy(data._short.data, rawString, size);
+        _flag = shortFlag;
+        _data.s.size = size;
+        memcpy(_data.s.data, rawString, size);
     }
 }
 
 
 size_t StringData::getSize() const {
-    if (flag == _shortFlag) {
-        return data._short.size;
+    if (_flag == shortFlag) {
+        return _data.s.size;
     }
-    return data._long.size;
+    return _data.l.size;
 }
 
-const char* StringData::getString() const {
-    return flag == _shortFlag ? data._short.data : data._long.data;
+char* StringData::_getString() {
+    return _flag == shortFlag ? _data.s.data : _data.l.data;
 }
 
-char* StringData::getString() {
-    return flag == _shortFlag ? data._short.data : data._long.data;
+const char* StringData::_getString() const {
+    return _flag == shortFlag ? _data.s.data : _data.l.data;
 }
 
 void StringData::remove() {
-    if (flag == _longFlag) {
-        delete[] data._long.data;
-        data._long.data = nullptr;
-        data._long.size = 0;
+    if (_flag == longFlag) {
+        delete[] _data.l.data;
+        _data.l.data = nullptr;
+        _data.l.size = 0;
     }
     else {
-        memset(data._short.data, '\0', maxShortSize);
-        data._short.size = 0;
+        memset(_data.s.data, '\0', _maxShortSize);
+        _data.s.size = 0;
     }
 }
+
+const char& StringData::operator[](size_t i) const {
+    return _getString()[i];
+}
+
+char& StringData::operator[](size_t i) {
+    return _getString()[i];
+}
+
+
+
+
 // << StringData implementation
 
 
@@ -60,7 +73,7 @@ MyString::MyString(const char* rawString) {
 }
 
 MyString::MyString(const MyString& other) {
-    _data.save(other._data.getString(),
+    _data.save(&other._data[0],
                other._data.getSize());
 }
 
@@ -90,12 +103,12 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 
 char& MyString::at(const unsigned int idx) {
     assert(idx < size());
-    return (_data.getString()[idx]);
+    return (_data[idx]);
 }
 
 const char& MyString::at(const unsigned int idx) const {
     assert(idx < size());
-    return _data.getString()[idx];
+    return _data[idx];
 }
 
 char& MyString::operator[](const unsigned int idx) {
@@ -121,9 +134,9 @@ MyString::~MyString() {
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
     StringData str;
-    str.save(_data.getString(), size() + insertedString.size());
-    memcpy(str.getString() + pos, insertedString._data.getString(), insertedString.size());
-    memcpy(str.getString() + pos + insertedString.size(), _data.getString() + pos, size() - pos);
+    str.save(&_data[0], size() + insertedString.size());
+    memcpy(&str[0] + pos, &insertedString._data[0], insertedString.size());
+    memcpy(&str[0] + pos + insertedString.size(), &_data[0] + pos, size() - pos);
     std::swap(str, _data);
     str.remove();
 }
@@ -138,7 +151,7 @@ void MyString::erase(unsigned int pos, unsigned int count) {
         (*this)[i] = (*this)[i + count];
     }
     StringData str;
-    str.save(_data.getString(), newSize);
+    str.save(&_data[0], newSize);
     std::swap(str, _data);
     str.remove();
 }
@@ -151,12 +164,9 @@ bool MyString::isEmpty() const {
     return !size();
 }
 
-// TODO: Перегрузить оператор <<
-//  Тут никак не избавиться от выделения памяти?
-//  Кроме как подменивать data у this на новый StringData объект.
 const char* MyString::rawString() const {
     char* str = new char[size() + 1];
-    memcpy(str, _data.getString(), size());
+    memcpy(str, &_data[0], size());
     str[size()] = '\0';
     return str;
 }

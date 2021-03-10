@@ -24,12 +24,15 @@ namespace {
             longFlag = 0
         } _flag;
         const static size_t _maxShortSize = sizeof(Long) - 1;
+
+        const char* _getString() const;
+        char* _getString();
     public:
         StringData();
         void save(const char* rawString, size_t size = sizeof(Long) - 1);
         size_t getSize() const;
-        const char* getString() const;
-        char* getString();
+        char& operator[](size_t i);
+        const char& operator[](size_t i) const;
         void remove();
     };
 }
