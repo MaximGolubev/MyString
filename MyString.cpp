@@ -12,8 +12,10 @@ MyString::MyString(const char* rawString) {
 }
 
 MyString::MyString(const MyString& other) {
-    _data.save(&other._data[0],
-               other._data.getSize());
+    if (other.size()) {
+        _data.save(&other._data[0],
+                   other.size());
+    }
 }
 
 MyString::MyString(MyString&& other) noexcept {
@@ -42,7 +44,7 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 
 char& MyString::at(const unsigned int idx) {
     assert(idx < size());
-    return (_data[idx]);
+    return _data[idx];
 }
 
 const char& MyString::at(const unsigned int idx) const {
