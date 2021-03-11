@@ -17,10 +17,10 @@ namespace sso {
             Short s;
         } _data;
 
-        enum {
-            shortFlag = 1,
-            longFlag = 0
-        } _flag;
+        enum class StringType{
+            Short = 1,
+            Long = 0
+        } _type;
         const static size_t _maxShortSize = sizeof(Long) - 1;
 
         const char* _getString() const;
@@ -37,7 +37,5 @@ namespace sso {
         // Закидывает nullptr в указатель длинной строки
         void unleash();
     };
-
-
 }
 

@@ -14,35 +14,35 @@ void sso::string::save(const char* rawString, size_t size) {
         remove();
     }
     if (size > _maxShortSize) {
-        _flag = longFlag;
+        _type = StringType::Long;
         _data.l.size = size;
         _data.l.data = new char[size];
         memcpy(_data.l.data, rawString, size);
     }
     else {
-        _flag = shortFlag;
+        _type = StringType::Short;
         _data.s.size = size;
         memcpy(_data.s.data, rawString, size);
     }
 }
 
 size_t sso::string::getSize() const {
-    if (_flag == shortFlag) {
+    if (_type == StringType::Short) {
         return _data.s.size;
     }
     return _data.l.size;
 }
 
 char* sso::string::_getString() {
-    return _flag == shortFlag ? _data.s.data : _data.l.data;
+    return _type == StringType::Short ? _data.s.data : _data.l.data;
 }
 
 const char* sso::string::_getString() const {
-    return _flag == shortFlag ? _data.s.data : _data.l.data;
+    return _type == StringType::Short ? _data.s.data : _data.l.data;
 }
 
 void sso::string::remove() {
-    if (_flag == longFlag) {
+    if (_type == StringType::Long) {
         delete[] _data.l.data;
         _data.l.data = nullptr;
         _data.l.size = 0;
@@ -64,7 +64,7 @@ char& sso::string::operator[](size_t i) {
 }
 
 void sso::string::unleash() {
-    if (_flag == longFlag) {
+    if (_type == StringType::Long) {
         _data.l.data = nullptr;
     }
 }
