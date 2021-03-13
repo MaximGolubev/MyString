@@ -1,16 +1,16 @@
 #include "MyString.h"
 
+#include <iostream>
+
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
 
 MyString::MyString(const char* rawString) {
-    this->_size = 0;
-    this->_data = nullptr;
     if (rawString != nullptr) {
-        this->_size = std::strlen(rawString);
-        this->_data = new char[this->size()];
+        size_t length = std::strlen(rawString);
+        _data.resize(length);
         for (size_t i = 0; i < this->size(); i++) {
             this->at(i) = rawString[i];
         }
@@ -18,26 +18,22 @@ MyString::MyString(const char* rawString) {
 }
 
 MyString::MyString(const MyString& other) {
-    this->_size = other.size();
-    this->_data = new char[other.size()];
+    _data.resize(other.size());
     for (size_t i = 0; i < this->size(); i++) {
         this->at(i) = other[i];
     }
 }
 
-MyString::MyString(MyString&& other) noexcept {
+/*MyString::MyString(MyString&& other) noexcept {
     this->_size = other.size();
     this->_data = other._data;
     other._size = 0;
     other._data = nullptr;
-}
+}*/
 
 MyString& MyString::operator=(const MyString& other) {
-    this->_size = other.size();
-    delete[] this->_data;
-    this->_data = nullptr;
+    _data.resize(other.size());
     if (!other.isEmpty()) {
-        this->_data = new char[other.size()];
         for (size_t i = 0; i < this->size(); i++) {
             this->at(i) = other[i];
         }
@@ -45,29 +41,23 @@ MyString& MyString::operator=(const MyString& other) {
     return *this;
 }
 
-MyString& MyString::operator=(MyString&& other) noexcept {
+/*MyString& MyString::operator=(MyString&& other) noexcept {
     this->_size = other.size();
     std::swap(this->_data, other._data);
     delete[] other._data; 
     other._data = nullptr;
     other._size = 0;
     return *this;
-}
-    
-MyString::~MyString() {
-    this->_size = 0;
-    delete[] this->_data;
-    this->_data = nullptr;
-}
+}*/
 
 char& MyString::at(const unsigned int idx) {
     assert(idx < size());
-    return _data[idx];
+    return _data.at(idx);
 }
 
 const char& MyString::at(const unsigned int idx) const {
     assert(idx < size());
-    return _data[idx];
+    return _data.at(idx);
 }
 
 
@@ -87,15 +77,15 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
     for (size_t i = pos; i < pos + insertedString.size(); i++) {
         newData[i] = insertedString[i - pos];
     }
-    this->_size += insertedString.size();
-    delete[] this->_data;
-    this->_data = newData;
+    _data.resize(this->size() + insertedString.size());
+    for (size_t i = 0; i < this->size(); i++) {
+        this->at(i) = newData[i];
+    }
+    delete[] newData;
 }
 
 void MyString::clear() {
-    delete[] this->_data;
-    this->_size = 0;
-    this->_data = nullptr;
+    _data.resize(0);
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
@@ -111,20 +101,21 @@ void MyString::erase(unsigned int pos, unsigned int count) {
     for (int i = (int)(this->size() - realCount) - 1; i >= (int)pos; i--) {
         newData[i] = this->at(i + realCount);
     }
-    this->_size -= realCount;
-    delete[] this->_data;
-    this->_data = nullptr;
+    _data.resize(this->size() - realCount);
     if (this->size() != 0) {
-        this->_data = newData;
+        for (size_t i = 0; i < this->size(); i++) {
+            this->at(i) = newData[i];
+        }
     }
+    delete[] newData;
 }
     
 unsigned int MyString::size() const { 
-    return this->_size;
+    return _data.size();
 }
 
 bool MyString::isEmpty() const {
-    return this->_size == 0;
+    return size() == 0;
 }
 
 const char* MyString::rawString() const {
