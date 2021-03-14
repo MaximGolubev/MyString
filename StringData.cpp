@@ -64,7 +64,7 @@ const char& StringData::at(const unsigned int idx) const {
     }
 }
 
-StringData& StringData::operator=(StringData&& other) noexcept {
+/*StringData& StringData::operator=(StringData&& other) noexcept {
     if (_data.flag == true) {
         std::swap(_data.String.Long._data, other._data.String.Long._data);
         delete[] other._data.String.Long._data;
@@ -77,4 +77,18 @@ StringData& StringData::operator=(StringData&& other) noexcept {
         _data.String.Short._size = other._data.String.Short._size;
         other._data.String.Short._size = 0;
     }
+}*/
+
+StringData& StringData::operator=(StringData&& other) noexcept {
+    if (_data.flag == true && other._data.flag == true) {
+        std::swap(_data.String.Long._data, other._data.String.Long._data);
+    }
+    else {
+        this->resize(other.size());
+        for (size_t i = 0; i < other.size(); i++) {
+            this->at(i) = other.at(i);
+        }
+    }
+    other.resize(0);
+    return *this;
 }
