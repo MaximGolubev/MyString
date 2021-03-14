@@ -15,7 +15,7 @@ public:
     MyString& operator=(const MyString& other);
     MyString& operator=(MyString&& other) noexcept;
 
-    //~MyString();
+    ~MyString();
     ///
     
     /// Modifiers

@@ -1,6 +1,7 @@
 #include "StringData.h"
 
 #include <cstring>
+#include <algorithm>
 
 StringData::StringData() {
     _data.flag = false;
@@ -63,11 +64,17 @@ const char& StringData::at(const unsigned int idx) const {
     }
 }
 
-/*StringData& StringData::operator=(StringData&& other) noexcept {
+StringData& StringData::operator=(StringData&& other) noexcept {
     if (_data.flag == true) {
-        delete[] _data.String.Long._data;
-        _data.String.Long._data = nullptr;
-        _data.String.Long._size = 0;
+        std::swap(_data.String.Long._data, other._data.String.Long._data);
+        delete[] other._data.String.Long._data;
+        other._data.String.Long._data = nullptr;
+        other._data.String.Long._size = 0;
     }
-    //what if string is short?
-}*/
+    else {
+        memcpy(_data.String.Short._data, other._data.String.Short._data,
+                sizeof(char) * other._data.String.Short._size);
+        _data.String.Short._size = other._data.String.Short._size;
+        other._data.String.Short._size = 0;
+    }
+}

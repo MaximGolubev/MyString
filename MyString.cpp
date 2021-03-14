@@ -1,7 +1,5 @@
 #include "MyString.h"
 
-#include <iostream>
-
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
@@ -24,12 +22,13 @@ MyString::MyString(const MyString& other) {
     }
 }
 
-/*MyString::MyString(MyString&& other) noexcept {
-    this->_size = other.size();
-    this->_data = other._data;
-    other._size = 0;
-    other._data = nullptr;
-}*/
+MyString::MyString(MyString&& other) noexcept {
+    _data = std::move(other._data);
+}
+
+MyString::~MyString() {
+    this->clear();
+}
 
 MyString& MyString::operator=(const MyString& other) {
     _data.resize(other.size());
@@ -41,14 +40,12 @@ MyString& MyString::operator=(const MyString& other) {
     return *this;
 }
 
-/*MyString& MyString::operator=(MyString&& other) noexcept {
-    this->_size = other.size();
-    std::swap(this->_data, other._data);
-    delete[] other._data; 
-    other._data = nullptr;
-    other._size = 0;
+MyString& MyString::operator=(MyString&& other) noexcept {
+    if (*this != other) {
+        _data = std::move(other._data);
+    }
     return *this;
-}*/
+}
 
 char& MyString::at(const unsigned int idx) {
     assert(idx < size());

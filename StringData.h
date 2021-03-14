@@ -20,6 +20,8 @@ public:
     StringData();
     ~StringData();
 
+    StringData& operator=(StringData&& other) noexcept;
+
     unsigned int size() const;
     void resize(const unsigned int length);
     char& at(const unsigned int idx);
