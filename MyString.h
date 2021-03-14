@@ -1,5 +1,7 @@
 #pragma once
 
+#include "StringData.h"
+
 class MyString
 {
 public:
@@ -105,6 +107,5 @@ public:
     bool operator>=(const MyString& comparableString) const;
     bool operator<=(const MyString& comparableString) const;
 private:
-    char* _data;
-    unsigned int _size;
+    StringData _data;
 };
