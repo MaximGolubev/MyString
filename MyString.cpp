@@ -1,9 +1,9 @@
 #include "MyString.h"
 
-#include <cassert>
 #include <cstring>
 #include <utility>
-
+#include <stdexcept>
+#include <sstream>
 
 MyString::MyString(const char* rawString) {
     if (rawString) {
@@ -43,21 +43,29 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 }
 
 char& MyString::at(const unsigned int idx) {
-    assert(idx < size());
-    return _data[idx];
+    if (idx >= size()) {
+        std::ostringstream str;
+        str << "MyString::out of range error. Idx = " << idx << " >= this->size() which is " << size() << std::endl;
+        throw std::out_of_range(str.str());
+    }
+    return operator[](idx);
 }
 
 const char& MyString::at(const unsigned int idx) const {
-    assert(idx < size());
-    return _data[idx];
+    if (idx >= size()) {
+        std::ostringstream str;
+        str << "MyString::out of range error. Idx = " << idx << " >= this->size() which is " << size() << std::endl;
+        throw std::out_of_range(str.str());
+    }
+    return operator[](idx);
 }
 
 char& MyString::operator[](const unsigned int idx) {
-    return at(idx);
+    return _data[idx];
 }
 
 const char& MyString::operator[](const unsigned int idx) const {
-    return at(idx);
+    return _data[idx];
 }
 
 MyString& MyString::operator+(const MyString& appendedString) {
@@ -74,7 +82,11 @@ MyString::~MyString() {
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
-    assert(pos <= size());
+    if (pos > size()) {
+        std::ostringstream str;
+        str << "MyString::out of range error. Pos = " << pos << " >= this->size() which is " << size() << std::endl;
+        throw std::out_of_range(str.str());
+    }
     sso::string str(&_data[0], size() + insertedString.size());
     memcpy(&str[0] + pos, &insertedString._data[0], insertedString.size());
     memcpy(&str[0] + pos + insertedString.size(), &_data[0] + pos, size() - pos);
@@ -87,7 +99,11 @@ void MyString::clear() {
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
-    assert(pos <= size());
+    if (pos > size()) {
+        std::ostringstream str;
+        str << "MyString::out of range error. Pos = " << pos << " >= this->size() which is " << size() << std::endl;
+        throw std::out_of_range(str.str());
+    }
     const unsigned int newSize = size() > count ? size() - count : pos - 1;
     for (size_t i = pos; i < newSize; ++i) {
         (*this)[i] = (*this)[i + count];
