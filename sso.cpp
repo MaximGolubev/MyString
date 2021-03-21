@@ -54,12 +54,10 @@ void sso::string::remove() {
 }
 
 const char& sso::string::operator[](size_t i) const {
-    assert(i < getSize());
     return _getString()[i];
 }
 
 char& sso::string::operator[](size_t i) {
-    assert(i < getSize());
     return _getString()[i];
 }
 
