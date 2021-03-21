@@ -1,6 +1,6 @@
 #include "MyString.h"
 
-#include <cassert>
+#include <stdexcept>
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
@@ -64,15 +64,17 @@ MyStringNS::MyString::MyString(MyString&& other) noexcept {
 }
 
 MyStringNS::MyString& MyStringNS::MyString::operator=(const MyString& other) {
-    _type.isLong = other._type.isLong;
-    if (_type.isLong) {
-        delete[] _type.stringType.longString._data;
+    if (other._type.isLong) {
+        if (_type.isLong) {
+            delete[] _type.stringType.longString._data;
+        }
         _type.stringType.longString._size = other.size();
         _type.stringType.longString._data = new char[size()];
     }
     else {
         _type.stringType.shortString._size = other.size();
     }
+    _type.isLong = other._type.isLong;
     for (unsigned int i = 0; i < size(); ++i) {
         (*this)[i] = other[i];
     }
@@ -115,7 +117,9 @@ void MyStringNS::MyString::append(const MyString& appendedString) {
 }
 
 void MyStringNS::MyString::insert(unsigned int pos, const MyString& insertedString) {
-    assert(pos <= size());
+    if (pos > size()) {
+        throw std::out_of_range("Out of MyString's range");
+    }
     if (size() + insertedString.size() >= sizeof(MyStringNS::StringRepresentation::Type::Long) - sizeof(char)){
         char* newData = new char[size() + insertedString.size()];
         unsigned int i = 0, endPos = pos + insertedString.size();
@@ -157,7 +161,9 @@ void MyStringNS::MyString::clear() {
 }
 
 void MyStringNS::MyString::erase(unsigned int pos, unsigned int charCount) {
-    assert(pos <= size());
+    if (pos > size()) {
+        throw std::out_of_range("Out of MyString's range");
+    }
     if (pos == 0 && (charCount >= size())) {
         clear();
         return;
@@ -201,7 +207,9 @@ void MyStringNS::MyString::erase(unsigned int pos, unsigned int charCount) {
 }
 
 char& MyStringNS::MyString::at(const unsigned int idx) {
-    assert(idx < size());
+    if (idx >= size()) {
+        throw std::out_of_range("Out of MyString's range");
+    }
     if (_type.isLong) {
         return _type.stringType.longString._data[idx];
     }
@@ -211,7 +219,9 @@ char& MyStringNS::MyString::at(const unsigned int idx) {
 }
 
 const char& MyStringNS::MyString::at(const unsigned int idx) const {
-    assert(idx < size());
+    if (idx >= size()) {
+        throw std::out_of_range("Out of MyString's range");
+    }
     if (_type.isLong) {
         return _type.stringType.longString._data[idx];
     }
