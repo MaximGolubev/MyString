@@ -45,7 +45,11 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 char& MyString::at(const unsigned int idx) {
     if (idx >= size()) {
         std::ostringstream str;
-        str << "MyString::out of range error. Idx = " << idx << " >= this->size() which is " << size() << std::endl;
+        str << "MyString::out of range error. Idx = "
+            << idx
+            << " >= this->size() which is "
+            << size()
+            << std::endl;
         throw std::out_of_range(str.str());
     }
     return operator[](idx);
@@ -54,7 +58,11 @@ char& MyString::at(const unsigned int idx) {
 const char& MyString::at(const unsigned int idx) const {
     if (idx >= size()) {
         std::ostringstream str;
-        str << "MyString::out of range error. Idx = " << idx << " >= this->size() which is " << size() << std::endl;
+        str << "MyString::out of range error. Idx = "
+            << idx
+            << " >= this->size() which is "
+            << size()
+            << std::endl;
         throw std::out_of_range(str.str());
     }
     return operator[](idx);
@@ -84,7 +92,11 @@ MyString::~MyString() {
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
     if (pos > size()) {
         std::ostringstream str;
-        str << "MyString::out of range error. Pos = " << pos << " >= this->size() which is " << size() << std::endl;
+        str << "MyString::out of range error. Pos = "
+            << pos
+            << " >= this->size() which is "
+            << size()
+            << std::endl;
         throw std::out_of_range(str.str());
     }
     sso::string str(&_data[0], size() + insertedString.size());
@@ -101,7 +113,11 @@ void MyString::clear() {
 void MyString::erase(unsigned int pos, unsigned int count) {
     if (pos > size()) {
         std::ostringstream str;
-        str << "MyString::out of range error. Pos = " << pos << " >= this->size() which is " << size() << std::endl;
+        str << "MyString::out of range error. Pos = "
+            << pos
+            << " >= this->size() which is "
+            << size()
+            << std::endl;
         throw std::out_of_range(str.str());
     }
     const unsigned int newSize = size() > count ? size() - count : pos - 1;
