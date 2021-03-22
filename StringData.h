@@ -23,9 +23,11 @@ public:
     StringData& operator=(const StringData& other);
     StringData& operator=(StringData&& other) noexcept;
 
-    StringData& edit(const char* rawString, unsigned int size);
+    void edit(const char* rawString, unsigned int size);
+    void dataSwap(char* data, unsigned int size);
 
-    const char* get() const;
+    char* getString();
+    const char* getConstString() const;
     unsigned int size() const;
     unsigned int capacity() const;
 

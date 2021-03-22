@@ -14,7 +14,7 @@ MyString::MyString(const char* rawString) {
 }
 
 MyString::MyString(const MyString& other) {
-    this->_value.edit(other._value.get(), other.size());
+    this->_value.edit(other._value.getConstString(), other.size());
 }
 
 MyString::MyString(MyString&& other) noexcept {
@@ -40,17 +40,22 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
         pos = size;
     }
     size += insertedString.size();
-    char* result = new char[size];
-    memcpy(result, this->_value.get(), pos);
-    unsigned temp = pos + insertedString.size();
-    for (unsigned int i = pos; i < temp; i++) {
-        result[i] = insertedString[i - pos];
+    char* result;
+    unsigned temp = pos + insertedString.size();;
+    if (size > this->_value.capacity()) {
+        result = new char[size];
+        memcpy(result, this->_value.getConstString(), pos);
+    }
+    else {
+        result = this->_value.getString();
     }
     for (unsigned int i = temp; i < size; i++) {
         result[i] = (*this)[i - insertedString.size()];
     }
-    this->_value.edit(result, size);
-    delete[] result;
+    for (unsigned int i = pos; i < temp; i++) {
+        result[i] = insertedString[i - pos];
+    }
+    this->_value.dataSwap(result, size);
 }
 
 void MyString::append(const MyString& appendedString) {
@@ -72,7 +77,7 @@ void MyString::erase(unsigned int pos, unsigned int count) {
         else {
             unsigned int size = this->size() - count;
             char* result = new char[size];
-            memcpy(result, this->_value.get(), pos);
+            memcpy(result, this->_value.getConstString(), pos);
             for (unsigned int i = pos + count; i < this->size(); i++) {
                 result[i - count] = (*this)[i];
             }
@@ -105,7 +110,7 @@ const char* MyString::rawString() const {
     }
     else {
         result = new char[this->size() + 1];
-        memcpy(result, this->_value.get(), this->size());
+        memcpy(result, this->_value.getConstString(), this->size());
         result[this->size()] = '\0';
     }
     return result;

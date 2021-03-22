@@ -71,7 +71,7 @@ StringData& StringData::operator=(StringData&& other) noexcept {
     return *this;
 }
 
-StringData& StringData::edit(const char* rawString, unsigned int size) {
+void StringData::edit(const char* rawString, unsigned int size) {
     if (!this->_isShort) {
         delete[] this->_info.lStr.data;
         this->_info.lStr.data = nullptr;
@@ -93,10 +93,27 @@ StringData& StringData::edit(const char* rawString, unsigned int size) {
             memcpy(this->_info.lStr.data, rawString, size);
         }
     }
-    return *this;
 }
 
-const char* StringData::get() const {
+void StringData::dataSwap(char* data, unsigned int size) {
+    if (!this->_isShort) {
+        delete[] this->_info.lStr.data;
+    }
+    if (size > this->capacity()) {
+        this->_isShort = false;
+        this->_info.lStr.size = size;
+        this->_info.lStr.data = data;
+    }
+    else {
+        this->_info.sStr.size = size;
+    }
+}
+
+char* StringData::getString() {
+    return (this->_isShort) ? this->_info.sStr.data : this->_info.lStr.data;
+}
+
+const char* StringData::getConstString() const {
     return (this->_isShort) ? this->_info.sStr.data : this->_info.lStr.data;
 }
 
