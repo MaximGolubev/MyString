@@ -4,7 +4,7 @@
 
 sso::string::string() {
     _type = StringType::Short;
-    memset(&_data, '\0', _maxShortSize);
+    memset(&_data, '\0', _maxShortSize + 1);
 }
 
 sso::string::string(const char* rawString, size_t size) {
@@ -57,13 +57,8 @@ const char* sso::string::_getString() const {
 void sso::string::remove() {
     if (_type == StringType::Long) {
         delete[] _data.l.data;
-        _data.l.data = nullptr;
-        _data.l.size = 0;
     }
-    else {
-        memset(_data.s.data, '\0', _maxShortSize);
-        _data.s.size = 0;
-    }
+    memset(&_data, '\0', _maxShortSize + 1);
     _type = StringType::Short;
 }
 
