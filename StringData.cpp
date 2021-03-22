@@ -98,6 +98,11 @@ void StringData::edit(const char* rawString, unsigned int size) {
 void StringData::dataSwap(char* data, unsigned int size) {
     if (!this->_isShort) {
         delete[] this->_info.lStr.data;
+        if ((this->_info.lStr.size > this->capacity()) && (size <= this->capacity())) {
+            this->_isShort = true;
+            memcpy(this->_info.sStr.data, data, size);
+            delete[] data;
+        }
     }
     if (size > this->capacity()) {
         this->_isShort = false;

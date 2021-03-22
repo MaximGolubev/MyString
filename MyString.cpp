@@ -41,7 +41,7 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
     }
     size += insertedString.size();
     char* result;
-    unsigned temp = pos + insertedString.size();;
+    unsigned temp = pos + insertedString.size();
     if (size > this->_value.capacity()) {
         result = new char[size];
         memcpy(result, this->_value.getConstString(), pos);
@@ -76,13 +76,18 @@ void MyString::erase(unsigned int pos, unsigned int count) {
         }
         else {
             unsigned int size = this->size() - count;
-            char* result = new char[size];
-            memcpy(result, this->_value.getConstString(), pos);
+            char* result;
+            if (this->size() > this->_value.capacity()) {
+                result = new char[size];
+                memcpy(result, this->_value.getConstString(), pos);
+            }
+            else {
+                result = this->_value.getString();
+            }
             for (unsigned int i = pos + count; i < this->size(); i++) {
                 result[i - count] = (*this)[i];
             }
-            this->_value.edit(result, size);
-            delete[] result;
+            this->_value.dataSwap(result, size);
         }
     }
 }

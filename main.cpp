@@ -2,9 +2,8 @@
 #include <iostream>
 
 int main() {
-    MyString a("123456781231231231");
-    MyString b("21312312dsadasdasdasdas");
-    a.insert(3,b);
+    MyString a("1234567890123456");
+    a.erase(0,2);
     std::cout << a.rawString();
     return 0;
 }
