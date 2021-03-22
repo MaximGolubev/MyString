@@ -18,8 +18,7 @@ MyString::MyString(const MyString& other) {
 }
 
 MyString::MyString(MyString&& other) noexcept {
-    this->_value = other._value;
-    other._value.clear();
+    this->_value = std::move(other._value);
 }
 
 MyString& MyString::operator=(const MyString& other) {
@@ -30,9 +29,7 @@ MyString& MyString::operator=(const MyString& other) {
 
 MyString& MyString::operator=(MyString&& other) noexcept {
     if (this != &other) {
-        this->_value.edit(nullptr, 0);
-        this->_value = other._value;
-        other._value.clear();
+        this->_value = std::move(other._value);
     }
     return *this;
 }

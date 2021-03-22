@@ -18,14 +18,16 @@ union StringRepresentation{
 class StringData {
 public:
     StringData();
+    explicit StringData(const StringData& other);
+    StringData(StringData&& other) noexcept;
+    StringData& operator=(const StringData& other);
+    StringData& operator=(StringData&& other) noexcept;
 
     StringData& edit(const char* rawString, unsigned int size);
 
     const char* get() const;
     unsigned int size() const;
     unsigned int capacity() const;
-
-    void clear();
 
     char& operator[](unsigned int idx);
     const char& operator[](unsigned int idx) const;
