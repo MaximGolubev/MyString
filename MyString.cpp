@@ -35,7 +35,6 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
-    unsigned int temp;
     unsigned int size = this->size();
     if (pos > size) {
         pos = size;
@@ -43,7 +42,7 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
     size += insertedString.size();
     char result[size];
     memcpy(result, this->_value.get(), pos);
-    temp = pos + insertedString.size();
+    unsigned temp = pos + insertedString.size();
     for (unsigned int i = pos; i < temp; i++) {
         result[i] = insertedString[i - pos];
     }
@@ -62,7 +61,6 @@ void MyString::clear() {
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
-    unsigned int size;
     if (pos < this->size()) {
         if (count > (this->size() - pos)) {
             count = this->size() - pos;
@@ -71,7 +69,7 @@ void MyString::erase(unsigned int pos, unsigned int count) {
             this->clear();
         }
         else {
-            size = this->size() - count;
+            unsigned int size = this->size() - count;
             char result[size];
             memcpy(result, this->_value.get(), pos);
             for (unsigned int i = pos + count; i < this->size(); i++) {
