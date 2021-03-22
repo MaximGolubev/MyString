@@ -2,8 +2,8 @@
 #include <iostream>
 
 int main() {
-    MyString a("123123");
-    MyString b("123");
-    std::cout << b[3];
+    MyString a("123");
+    MyString b(std::move(a));
+    std::cout << b.rawString();
     return 0;
 }

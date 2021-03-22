@@ -32,7 +32,7 @@ public:
 
     ~StringData();
 private:
-    bool _flag;
+    bool _isShort;
     StringRepresentation _info;
 };
 
