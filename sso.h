@@ -28,14 +28,14 @@ namespace sso {
     public:
         string();
         string(const char* rawString, size_t size);
+        string(const string& other) = default;
+        string& operator=(string&& other) noexcept;
+
         void save(const char* rawString, size_t size = sizeof(Long) - 1);
         size_t getSize() const;
         char& operator[](size_t i);
         const char& operator[](size_t i) const;
         void remove();
-
-        // Закидывает nullptr в указатель длинной строки
-        void unleash();
     };
 }
 

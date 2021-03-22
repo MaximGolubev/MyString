@@ -19,25 +19,20 @@ MyString::MyString(const MyString& other) {
 }
 
 MyString::MyString(MyString&& other) noexcept {
-    _data = other._data;
-    other._data.unleash();
-    other._data.remove();
+    _data = std::move(other._data);
 }
 
 MyString& MyString::operator=(const MyString& other) {
     if (this != &other) {
         MyString copy(other);
-        std::swap(_data, copy._data);
+        _data = std::move(copy._data);
     }
     return *this;
 }
 
 MyString& MyString::operator=(MyString&& other) noexcept {
     if (this != &other) {
-        _data.remove();
-        _data = other._data;
-        other._data.unleash();
-        other._data.remove();
+       _data = std::move(other._data);
     }
     return *this;
 }
@@ -102,8 +97,7 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
     sso::string str(&_data[0], size() + insertedString.size());
     memcpy(&str[0] + pos, &insertedString._data[0], insertedString.size());
     memcpy(&str[0] + pos + insertedString.size(), &_data[0] + pos, size() - pos);
-    std::swap(str, _data);
-    str.remove();
+    _data = std::move(str);
 }
 
 void MyString::clear() {
@@ -120,13 +114,12 @@ void MyString::erase(unsigned int pos, unsigned int count) {
             << std::endl;
         throw std::out_of_range(str.str());
     }
-    const unsigned int newSize = size() > count ? size() - count : pos - 1;
+    const unsigned int newSize = size() > count ? size() - count : pos;
     for (size_t i = pos; i < newSize; ++i) {
         (*this)[i] = (*this)[i + count];
     }
     sso::string str(&_data[0], newSize);
-    std::swap(str, _data);
-    str.remove();
+    _data = std::move(str);
 }
 
 unsigned int MyString::size() const {

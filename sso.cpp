@@ -1,12 +1,25 @@
 #include "sso.h"
 #include <cassert>
+#include <utility>
 
 sso::string::string() {
+    _type = StringType::Short;
     memset(&_data, '\0', _maxShortSize);
 }
 
 sso::string::string(const char* rawString, size_t size) {
+    _type = StringType::Short;
     save(rawString, size);
+}
+
+sso::string& sso::string::operator=(string&& other) noexcept {
+    if (this != &other) {
+        remove();
+        _data.l.size = std::exchange(other._data.l.size, 0);
+        _data.l.data = std::exchange(other._data.l.data, nullptr);
+        _type        = std::exchange(other._type, StringType::Short);
+    }
+    return *this;
 }
 
 void sso::string::save(const char* rawString, size_t size) {
@@ -51,6 +64,7 @@ void sso::string::remove() {
         memset(_data.s.data, '\0', _maxShortSize);
         _data.s.size = 0;
     }
+    _type = StringType::Short;
 }
 
 const char& sso::string::operator[](size_t i) const {
@@ -59,10 +73,4 @@ const char& sso::string::operator[](size_t i) const {
 
 char& sso::string::operator[](size_t i) {
     return _getString()[i];
-}
-
-void sso::string::unleash() {
-    if (_type == StringType::Long) {
-        _data.l.data = nullptr;
-    }
 }
