@@ -40,7 +40,7 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
         pos = size;
     }
     size += insertedString.size();
-    char result[size];
+    char* result = new char[size];
     memcpy(result, this->_value.get(), pos);
     unsigned temp = pos + insertedString.size();
     for (unsigned int i = pos; i < temp; i++) {
@@ -50,6 +50,7 @@ void MyString::insert(unsigned int pos, const MyString& insertedString) {
         result[i] = (*this)[i - insertedString.size()];
     }
     this->_value.edit(result, size);
+    delete[] result;
 }
 
 void MyString::append(const MyString& appendedString) {
@@ -70,12 +71,13 @@ void MyString::erase(unsigned int pos, unsigned int count) {
         }
         else {
             unsigned int size = this->size() - count;
-            char result[size];
+            char* result = new char[size];
             memcpy(result, this->_value.get(), pos);
             for (unsigned int i = pos + count; i < this->size(); i++) {
                 result[i - count] = (*this)[i];
             }
             this->_value.edit(result, size);
+            delete[] result;
         }
     }
 }

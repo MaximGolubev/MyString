@@ -2,8 +2,9 @@
 #include <iostream>
 
 int main() {
-    MyString a("12321312312312312312312");
-    MyString b("SDASDASDASDASDASDASDASDASDAD");
-    a = std::move(b);
+    MyString a("1231231241242341234123");
+    MyString b("ASD");
+    a.insert(0,b);
+    std::cout << a.rawString();
     return 0;
 }
