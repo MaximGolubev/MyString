@@ -1,7 +1,9 @@
 #pragma once
 
-class MyString
-{
+#include <cstring>
+#include "sso.h"
+
+class MyString {
 public:
     /// c-tor
     MyString(const char* rawString = nullptr);
@@ -15,7 +17,7 @@ public:
 
     ~MyString();
     ///
-    
+
     /// Modifiers
     /*!
         appends string to source
@@ -66,7 +68,7 @@ public:
     bool isEmpty() const;
 
     /*!
-        get non-modified raw string 
+        get non-modified raw string
         \return c-style string
     */
     const char* rawString() const;
@@ -105,6 +107,5 @@ public:
     bool operator>=(const MyString& comparableString) const;
     bool operator<=(const MyString& comparableString) const;
 private:
-    char* _data;
-    unsigned int _size;
+    sso::string _data;
 };
