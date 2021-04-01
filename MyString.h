@@ -1,8 +1,15 @@
 #pragma once
 
 #include <iostream>
+#include <exception>
 
 namespace MyStringNS {
+
+    enum class ExceptionType {
+        At,
+        Insert,
+        Erase,
+    };
 
     struct StringRepresentation {
         union Type {
@@ -16,6 +23,17 @@ namespace MyStringNS {
             } shortString;
         } stringType;
         bool isLong;
+    };
+
+    class StringException : public std::exception {
+    public:
+        StringException(unsigned int index, unsigned int size, ExceptionType type);
+        ~StringException() = default;
+        const char* what() const noexcept override;
+    private:
+        unsigned int _index;
+        unsigned int _size;
+        ExceptionType _type;
     };
 
     class MyString

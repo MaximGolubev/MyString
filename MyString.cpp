@@ -118,7 +118,7 @@ void MyStringNS::MyString::append(const MyString& appendedString) {
 
 void MyStringNS::MyString::insert(unsigned int pos, const MyString& insertedString) {
     if (pos > size()) {
-        throw std::out_of_range("Out of MyString's range");
+        throw MyStringNS::StringException(pos, size(), MyStringNS::ExceptionType::Insert);
     }
     if (size() + insertedString.size() >= sizeof(MyStringNS::StringRepresentation::Type::Long) - sizeof(char)){
         char* newData = new char[size() + insertedString.size()];
@@ -162,7 +162,7 @@ void MyStringNS::MyString::clear() {
 
 void MyStringNS::MyString::erase(unsigned int pos, unsigned int charCount) {
     if (pos > size()) {
-        throw std::out_of_range("Out of MyString's range");
+        throw MyStringNS::StringException(pos, size(), MyStringNS::ExceptionType::Erase);
     }
     if (pos == 0 && (charCount >= size())) {
         clear();
@@ -208,7 +208,7 @@ void MyStringNS::MyString::erase(unsigned int pos, unsigned int charCount) {
 
 char& MyStringNS::MyString::at(const unsigned int idx) {
     if (idx >= size()) {
-        throw std::out_of_range("Out of MyString's range");
+        throw MyStringNS::StringException(idx, size(), MyStringNS::ExceptionType::At);
     }
     if (_type.isLong) {
         return _type.stringType.longString._data[idx];
@@ -220,7 +220,7 @@ char& MyStringNS::MyString::at(const unsigned int idx) {
 
 const char& MyStringNS::MyString::at(const unsigned int idx) const {
     if (idx >= size()) {
-        throw std::out_of_range("Out of MyString's range");
+        throw MyStringNS::StringException(idx, size(), MyStringNS::ExceptionType::At);
     }
     if (_type.isLong) {
         return _type.stringType.longString._data[idx];
