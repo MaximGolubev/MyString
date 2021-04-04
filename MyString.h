@@ -1,110 +1,149 @@
 #pragma once
 
-class MyString
-{
-public:
-    /// c-tor
-    MyString(const char* rawString = nullptr);
+#include <iostream>
+#include <exception>
 
-    /// the rule of five
-    explicit MyString(const MyString& other);
-    MyString(MyString&& other) noexcept;
+namespace MyStringNS {
 
-    MyString& operator=(const MyString& other);
-    MyString& operator=(MyString&& other) noexcept;
+    enum class ExceptionType {
+        At,
+        Insert,
+        Erase,
+    };
 
-    ~MyString();
-    ///
-    
-    /// Modifiers
-    /*!
-        appends string to source
-        \param appendedString - string that is inserted at the end
-    */
-    void append(const MyString& appendedString);
+    struct StringRepresentation {
+        union Type {
+            struct Long {
+                char* _data;
+                std::size_t _size;
+            } longString;
+            struct Short {
+                char _data[sizeof(Long) - sizeof(char)];
+                unsigned char _size;
+            } shortString;
+        } stringType;
+        bool isLong;
+    };
 
-    /*!
-        inserts string at the passed position <br>
-        \param pos - insertion index
-        \param insertedString - string that is inserted at the pos
-    */
-    void insert(unsigned int pos, const MyString& insertedString);
+    class StringException : public std::exception {
+    public:
+        StringException(unsigned int index, unsigned int size, ExceptionType type);
+        ~StringException() = default;
+        const char* what() const noexcept override;
+    private:
+        unsigned int _index;
+        unsigned int _size;
+        ExceptionType _type;
+    };
 
-    /*!
-        clear string
-    */
-    void clear();
+    class MyString
+    {
+    public:
+        /// c-tor
+        MyString(const char* rawString = nullptr);
 
-    /*!
-        removes count characters from the string starting from pos index. <br>
-        if count > size - pos then count := size - pos
-        \param pos - erasing index
-        \param count - count of characters to remove
-    */
-    void erase(unsigned int pos, unsigned int count);
-    ///
+        /// the rule of five
+        explicit MyString(const MyString& other);
+        MyString(MyString&& other) noexcept;
 
-    /// Accessors
-    /*!
-        access to character at the idx
-        \param idx - character index
-        \return reference to character
-    */
-    char& at(unsigned int idx);
-    const char& at(unsigned int idx) const;
+        MyString& operator=(const MyString& other);
+        MyString& operator=(MyString&& other) noexcept;
 
-    /*!
-        get string sise
-        \return count of characters
-    */
-    unsigned int size() const;
+        ~MyString();
+        ///
 
-    /*!
-        check that string is empty
-        \return true if string is empty else false
-    */
-    bool isEmpty() const;
+        /// Modifiers
+        /*!
+            appends string to source
+            \param appendedString - string that is inserted at the end
+        */
+        void append(const MyString& appendedString);
 
-    /*!
-        get non-modified raw string 
-        \return c-style string
-    */
-    const char* rawString() const;
-    ///
+        /*!
+            inserts string at the passed position <br>
+            \param pos - insertion index
+            \param insertedString - string that is inserted at the pos
+        */
+        void insert(unsigned int pos, const MyString& insertedString);
 
-    /// Search
-    unsigned int find(const MyString& substring, unsigned int pos = 0);
-    ///
+        /*!
+            clear string
+        */
+        void clear();
 
-    /// Compares
-    /*!
-        analogue of strcmp
-    */
-    int compare(const MyString& comparableString) const;
-    ///
+        /*!
+            removes count characters from the string starting from pos index. <br>
+            if count > size - pos then count := size - pos
+            \param pos - erasing index
+            \param count - count of characters to remove
+        */
+        void erase(unsigned int pos, unsigned int count);
+        ///
 
-    /// Overloads
-    /*!
-        see at-methods
-    */
-    char& operator[](unsigned int idx);
-    const char& operator[](unsigned int idx) const;
+        /// Accessors
+        /*!
+            access to character at the idx
+            \param idx - character index
+            \return reference to character
+        */
+        char& at(unsigned int idx);
+        const char& at(unsigned int idx) const;
 
-    /*!
-        see append-method
-    */
-    MyString& operator+(const MyString& appendedString);
+        /*!
+            get string sise
+            \return count of characters
+        */
+        unsigned int size() const;
 
-    /*!
-        see compares section
-    */
-    bool operator==(const MyString& comparableString) const;
-    bool operator!=(const MyString& comparableString) const;
-    bool operator>(const MyString& comparableString) const;
-    bool operator<(const MyString& comparableString) const;
-    bool operator>=(const MyString& comparableString) const;
-    bool operator<=(const MyString& comparableString) const;
-private:
-    char* _data;
-    unsigned int _size;
-};
+        /*!
+            check that string is empty
+            \return true if string is empty else false
+        */
+        bool isEmpty() const;
+
+        /*!
+            get non-modified raw string
+            \return c-style string
+        */
+        const char* rawString() const;
+        ///
+
+        /// Search
+        unsigned int find(const MyString& substring, unsigned int pos = 0);
+        ///
+
+        /// Compares
+        /*!
+            analogue of strcmp
+        */
+        int compare(const MyString& comparableString) const;
+        ///
+
+        /// Overloads
+        /*!
+            see at-methods
+        */
+        char& operator[](unsigned int idx);
+        const char& operator[](unsigned int idx) const;
+
+        /*!
+            see append-method
+        */
+        MyString& operator+(const MyString& appendedString);
+
+        /*!
+            see compares section
+        */
+        bool operator==(const MyString& comparableString) const;
+        bool operator!=(const MyString& comparableString) const;
+        bool operator>(const MyString& comparableString) const;
+        bool operator<(const MyString& comparableString) const;
+        bool operator>=(const MyString& comparableString) const;
+        bool operator<=(const MyString& comparableString) const;
+    private:
+        StringRepresentation _type;
+        //char* _data;
+        //unsigned int _size;
+    };
+
+}
