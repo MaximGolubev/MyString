@@ -22,8 +22,10 @@ MyString::MyString(MyString&& other) noexcept {
 }
 
 MyString& MyString::operator=(const MyString& other) {
-    MyString copy(other);
-    std::swap(this->_value, copy._value);
+    if (this != &other) {
+        MyString copy(other);
+        std::swap(this->_value, copy._value);
+    }
     return *this;
 }
 

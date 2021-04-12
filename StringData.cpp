@@ -39,15 +39,16 @@ StringData::StringData(StringData&& other) noexcept {
 }
 
 StringData& StringData::operator=(const StringData& other) {
-    StringData copy(other);
-    std::swap(this->_isShort, copy._isShort);
-    if (this->_isShort) {
-        std::swap(this->_info.sStr.size, copy._info.sStr.size);
-        std::swap(this->_info.sStr.data, copy._info.sStr.data);
-    }
-    else {
-        std::swap(this->_info.lStr.size, copy._info.lStr.size);
-        std::swap(this->_info.lStr.data, copy._info.lStr.data);
+    if (this != &other) {
+        StringData copy(other);
+        std::swap(this->_isShort, copy._isShort);
+        if (this->_isShort) {
+            std::swap(this->_info.sStr.size, copy._info.sStr.size);
+            std::swap(this->_info.sStr.data, copy._info.sStr.data);
+        } else {
+            std::swap(this->_info.lStr.size, copy._info.lStr.size);
+            std::swap(this->_info.lStr.data, copy._info.lStr.data);
+        }
     }
     return *this;
 }
