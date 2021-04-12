@@ -1,0 +1,235 @@
+\hypertarget{classMyString}{\section{My\-String Class Reference}
+\label{classMyString}\index{My\-String@{My\-String}}
+}
+
+
+Char array container.  
+
+
+
+
+{\ttfamily \#include $<$My\-String.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classMyString_a68d7c86c6e92b8c142c8addcfb8e320f}{\hyperlink{classMyString_a68d7c86c6e92b8c142c8addcfb8e320f}{My\-String} (const char $\ast$\hyperlink{classMyString_accc7aa9004aa6626167bf10df21c9c1a}{raw\-String}=nullptr)}\label{classMyString_a68d7c86c6e92b8c142c8addcfb8e320f}
+
+\begin{DoxyCompactList}\small\item\em c-\/tor \end{DoxyCompactList}\item 
+\hypertarget{classMyString_a261187457de0d93e0041845f41b0bd12}{\hyperlink{classMyString_a261187457de0d93e0041845f41b0bd12}{My\-String} (const \hyperlink{classMyString}{My\-String} \&other)}\label{classMyString_a261187457de0d93e0041845f41b0bd12}
+
+\begin{DoxyCompactList}\small\item\em the rule of five \end{DoxyCompactList}\item 
+\hypertarget{classMyString_aaed6b677d21961d1fe8cfec5a508dcea}{{\bfseries My\-String} (\hyperlink{classMyString}{My\-String} \&\&other) noexcept}\label{classMyString_aaed6b677d21961d1fe8cfec5a508dcea}
+
+\item 
+\hypertarget{classMyString_a53ccee069eec453de7a091b1bd2ebfa2}{\hyperlink{classMyString}{My\-String} \& {\bfseries operator=} (const \hyperlink{classMyString}{My\-String} \&other)}\label{classMyString_a53ccee069eec453de7a091b1bd2ebfa2}
+
+\item 
+\hypertarget{classMyString_a543bd0b53a2b46d1db45713e2c178853}{\hyperlink{classMyString}{My\-String} \& {\bfseries operator=} (\hyperlink{classMyString}{My\-String} \&\&other) noexcept}\label{classMyString_a543bd0b53a2b46d1db45713e2c178853}
+
+\item 
+void \hyperlink{classMyString_af63b9b7a112088b2133b28f735ca0c4f}{append} (const \hyperlink{classMyString}{My\-String} \&appended\-String)
+\begin{DoxyCompactList}\small\item\em Modifiers. \end{DoxyCompactList}\item 
+void \hyperlink{classMyString_a815abd5c91361ef112923fde909f402b}{insert} (unsigned int pos, const \hyperlink{classMyString}{My\-String} \&inserted\-String)
+\item 
+void \hyperlink{classMyString_a7fc37d3cf514635d73d1a291864a2c2c}{clear} ()
+\item 
+void \hyperlink{classMyString_a5181e4e6dd43e67aaab9d506197dfcd8}{erase} (unsigned int pos, unsigned int count)
+\item 
+char \& \hyperlink{classMyString_a74036e0ffae135ff8e045c1b1a2a1c99}{at} (unsigned int idx)
+\begin{DoxyCompactList}\small\item\em Accessors. \end{DoxyCompactList}\item 
+\hypertarget{classMyString_a562c50c8dcff875873052f0f4439759b}{const char \& {\bfseries at} (unsigned int idx) const }\label{classMyString_a562c50c8dcff875873052f0f4439759b}
+
+\item 
+unsigned int \hyperlink{classMyString_a9f71e8c0be415906d4b9713975bba0bc}{size} () const 
+\item 
+bool \hyperlink{classMyString_a7de2386f455be51c728a418cadb02289}{is\-Empty} () const 
+\item 
+const char $\ast$ \hyperlink{classMyString_accc7aa9004aa6626167bf10df21c9c1a}{raw\-String} () const 
+\item 
+\hypertarget{classMyString_a7748d474b6c4017cad1e1d3d2b28aeae}{unsigned int \hyperlink{classMyString_a7748d474b6c4017cad1e1d3d2b28aeae}{find} (const \hyperlink{classMyString}{My\-String} \&substring, unsigned int pos=0)}\label{classMyString_a7748d474b6c4017cad1e1d3d2b28aeae}
+
+\begin{DoxyCompactList}\small\item\em Search. \end{DoxyCompactList}\item 
+int \hyperlink{classMyString_a57d2aa76b38785c8d4949a0ee0d2bcf8}{compare} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const 
+\begin{DoxyCompactList}\small\item\em Compares. \end{DoxyCompactList}\item 
+char \& \hyperlink{classMyString_a05cc7418364db708e5932afc03033feb}{operator\mbox{[}$\,$\mbox{]}} (unsigned int idx)
+\begin{DoxyCompactList}\small\item\em Overloads. \end{DoxyCompactList}\item 
+\hypertarget{classMyString_a8d4854e7d5cefd9490a62304756317a6}{const char \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (unsigned int idx) const }\label{classMyString_a8d4854e7d5cefd9490a62304756317a6}
+
+\item 
+\hyperlink{classMyString}{My\-String} \& \hyperlink{classMyString_adc73d01d26acedfc6817ca51d5b9ddef}{operator+} (const \hyperlink{classMyString}{My\-String} \&appended\-String)
+\item 
+bool \hyperlink{classMyString_a63a7af44a73ef9a0dd81527c8f0ec161}{operator==} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const 
+\item 
+\hypertarget{classMyString_aaad9fb6726a1459a971569aef1717b7e}{bool {\bfseries operator!=} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const }\label{classMyString_aaad9fb6726a1459a971569aef1717b7e}
+
+\item 
+\hypertarget{classMyString_a32135fa3dd2640e5f861759d71c0cbed}{bool {\bfseries operator$>$} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const }\label{classMyString_a32135fa3dd2640e5f861759d71c0cbed}
+
+\item 
+\hypertarget{classMyString_a64d0015a39e4edd433d4744c535c82fa}{bool {\bfseries operator$<$} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const }\label{classMyString_a64d0015a39e4edd433d4744c535c82fa}
+
+\item 
+\hypertarget{classMyString_a33bb1de467f6c0a387817623098f89c4}{bool {\bfseries operator$>$=} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const }\label{classMyString_a33bb1de467f6c0a387817623098f89c4}
+
+\item 
+\hypertarget{classMyString_a45a58bf09f5989a620dfa28f4b39ee22}{bool {\bfseries operator$<$=} (const \hyperlink{classMyString}{My\-String} \&comparable\-String) const }\label{classMyString_a45a58bf09f5989a620dfa28f4b39ee22}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Char array container. 
+
+\begin{DoxyAuthor}{Author}
+Maxim Golubev
+\end{DoxyAuthor}
+Abstraction for string 
+
+\subsection{Member Function Documentation}
+\hypertarget{classMyString_af63b9b7a112088b2133b28f735ca0c4f}{\index{My\-String@{My\-String}!append@{append}}
+\index{append@{append}!MyString@{My\-String}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}void My\-String\-::append (
+\begin{DoxyParamCaption}
+\item[{const {\bf My\-String} \&}]{appended\-String}
+\end{DoxyParamCaption}
+)}}\label{classMyString_af63b9b7a112088b2133b28f735ca0c4f}
+
+
+Modifiers. 
+
+appends string to source 
+\begin{DoxyParams}{Parameters}
+{\em appended\-String} & -\/ string that is inserted at the end \\
+\hline
+\end{DoxyParams}
+\hypertarget{classMyString_a74036e0ffae135ff8e045c1b1a2a1c99}{\index{My\-String@{My\-String}!at@{at}}
+\index{at@{at}!MyString@{My\-String}}
+\subsubsection[{at}]{\setlength{\rightskip}{0pt plus 5cm}char \& My\-String\-::at (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{idx}
+\end{DoxyParamCaption}
+)}}\label{classMyString_a74036e0ffae135ff8e045c1b1a2a1c99}
+
+
+Accessors. 
+
+access to character at the idx 
+\begin{DoxyParams}{Parameters}
+{\em idx} & -\/ character index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to character 
+\end{DoxyReturn}
+\hypertarget{classMyString_a7fc37d3cf514635d73d1a291864a2c2c}{\index{My\-String@{My\-String}!clear@{clear}}
+\index{clear@{clear}!MyString@{My\-String}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}void My\-String\-::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classMyString_a7fc37d3cf514635d73d1a291864a2c2c}
+clear string \hypertarget{classMyString_a57d2aa76b38785c8d4949a0ee0d2bcf8}{\index{My\-String@{My\-String}!compare@{compare}}
+\index{compare@{compare}!MyString@{My\-String}}
+\subsubsection[{compare}]{\setlength{\rightskip}{0pt plus 5cm}int My\-String\-::compare (
+\begin{DoxyParamCaption}
+\item[{const {\bf My\-String} \&}]{comparable\-String}
+\end{DoxyParamCaption}
+) const}}\label{classMyString_a57d2aa76b38785c8d4949a0ee0d2bcf8}
+
+
+Compares. 
+
+analogue of strcmp \hypertarget{classMyString_a5181e4e6dd43e67aaab9d506197dfcd8}{\index{My\-String@{My\-String}!erase@{erase}}
+\index{erase@{erase}!MyString@{My\-String}}
+\subsubsection[{erase}]{\setlength{\rightskip}{0pt plus 5cm}void My\-String\-::erase (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{pos, }
+\item[{unsigned int}]{count}
+\end{DoxyParamCaption}
+)}}\label{classMyString_a5181e4e6dd43e67aaab9d506197dfcd8}
+removes count characters from the string starting from pos index. \par
+ if count $>$ size -\/ pos then count \-:= size -\/ pos 
+\begin{DoxyParams}{Parameters}
+{\em pos} & -\/ erasing index \\
+\hline
+{\em count} & -\/ count of characters to remove \\
+\hline
+\end{DoxyParams}
+\hypertarget{classMyString_a815abd5c91361ef112923fde909f402b}{\index{My\-String@{My\-String}!insert@{insert}}
+\index{insert@{insert}!MyString@{My\-String}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}void My\-String\-::insert (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{pos, }
+\item[{const {\bf My\-String} \&}]{inserted\-String}
+\end{DoxyParamCaption}
+)}}\label{classMyString_a815abd5c91361ef112923fde909f402b}
+inserts string at the passed position \par
+ 
+\begin{DoxyParams}{Parameters}
+{\em pos} & -\/ insertion index \\
+\hline
+{\em inserted\-String} & -\/ string that is inserted at the pos \\
+\hline
+\end{DoxyParams}
+\hypertarget{classMyString_a7de2386f455be51c728a418cadb02289}{\index{My\-String@{My\-String}!is\-Empty@{is\-Empty}}
+\index{is\-Empty@{is\-Empty}!MyString@{My\-String}}
+\subsubsection[{is\-Empty}]{\setlength{\rightskip}{0pt plus 5cm}bool My\-String\-::is\-Empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classMyString_a7de2386f455be51c728a418cadb02289}
+check that string is empty \begin{DoxyReturn}{Returns}
+true if string is empty else false 
+\end{DoxyReturn}
+\hypertarget{classMyString_adc73d01d26acedfc6817ca51d5b9ddef}{\index{My\-String@{My\-String}!operator+@{operator+}}
+\index{operator+@{operator+}!MyString@{My\-String}}
+\subsubsection[{operator+}]{\setlength{\rightskip}{0pt plus 5cm}{\bf My\-String} \& My\-String\-::operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf My\-String} \&}]{appended\-String}
+\end{DoxyParamCaption}
+)}}\label{classMyString_adc73d01d26acedfc6817ca51d5b9ddef}
+see append-\/method \hypertarget{classMyString_a63a7af44a73ef9a0dd81527c8f0ec161}{\index{My\-String@{My\-String}!operator==@{operator==}}
+\index{operator==@{operator==}!MyString@{My\-String}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool My\-String\-::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf My\-String} \&}]{comparable\-String}
+\end{DoxyParamCaption}
+) const}}\label{classMyString_a63a7af44a73ef9a0dd81527c8f0ec161}
+see compares section \hypertarget{classMyString_a05cc7418364db708e5932afc03033feb}{\index{My\-String@{My\-String}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!MyString@{My\-String}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}char \& My\-String\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{idx}
+\end{DoxyParamCaption}
+)}}\label{classMyString_a05cc7418364db708e5932afc03033feb}
+
+
+Overloads. 
+
+see at-\/methods \hypertarget{classMyString_accc7aa9004aa6626167bf10df21c9c1a}{\index{My\-String@{My\-String}!raw\-String@{raw\-String}}
+\index{raw\-String@{raw\-String}!MyString@{My\-String}}
+\subsubsection[{raw\-String}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ My\-String\-::raw\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classMyString_accc7aa9004aa6626167bf10df21c9c1a}
+get non-\/modified raw string \begin{DoxyReturn}{Returns}
+c-\/style string 
+\end{DoxyReturn}
+\hypertarget{classMyString_a9f71e8c0be415906d4b9713975bba0bc}{\index{My\-String@{My\-String}!size@{size}}
+\index{size@{size}!MyString@{My\-String}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int My\-String\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classMyString_a9f71e8c0be415906d4b9713975bba0bc}
+get string sise \begin{DoxyReturn}{Returns}
+count of characters 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+My\-String.\-h\item 
+My\-String.\-cpp\end{DoxyCompactItemize}

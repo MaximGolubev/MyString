@@ -1,3 +1,8 @@
+/*!
+ * \file
+ * \brief MyString
+ */ 
+
 #pragma once
 
 /*!
