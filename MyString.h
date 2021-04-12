@@ -1,5 +1,11 @@
 #pragma once
 
+/*!
+ * \brief Char array container
+ * \author Maxim Golubev
+ *
+ * Abstraction for string
+ */ 
 class MyString
 {
 public:
