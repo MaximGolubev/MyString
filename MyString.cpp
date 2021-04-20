@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
+#include <stdexcept>
 
 MyString::MyString(const char* rawString) {
     if (rawString != nullptr) {
@@ -48,12 +49,16 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 }
 
 char& MyString::at(const unsigned int idx) {
-    assert(idx < size());
+    if (idx >= this->size()) {
+        throw std::out_of_range("At out of range");
+    }
     return _data.at(idx);
 }
 
 const char& MyString::at(const unsigned int idx) const {
-    assert(idx < size());
+    if (idx >= this->size()) {
+        throw std::out_of_range("At out of range");
+    }
     return _data.at(idx);
 }
 
@@ -63,7 +68,9 @@ void MyString::append(const MyString& appendedString) {
 }
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
-    assert(pos <= this->size());
+    if (pos > this->size()) {
+        throw std::out_of_range("Insert out of range");
+    }
     char* newData = new char[this->size() + insertedString.size()];
     for (size_t i = 0; i < this->size(); i++) {
         newData[i] = this->at(i);
@@ -86,7 +93,9 @@ void MyString::clear() {
 }
 
 void MyString::erase(unsigned int pos, unsigned int count) {
-    assert(pos <= this->size());
+    if (pos > this->size()) {
+        throw std::out_of_range("Erase out of range");
+    }
     size_t realCount = count;
     if (count > this->size() - pos) {
         realCount = this->size() - pos;
@@ -125,7 +134,9 @@ const char* MyString::rawString() const {
 }
 
 unsigned int MyString::find(const MyString& substring, const unsigned int pos) {
-    assert(pos <= this->size());
+    if (pos > this->size()) {
+        throw std::out_of_range("Find out of range");
+    }
     for (size_t i = pos; i < this->size() - substring.size() + 1; i++) {
         bool equal = true;
         for (size_t j = i; j < i + substring.size(); j++) {
