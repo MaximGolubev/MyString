@@ -2,6 +2,8 @@
 
 #include "StringData.h"
 
+#include <exception>
+
 class MyString
 {
 public:
@@ -106,6 +108,36 @@ public:
     bool operator<(const MyString& comparableString) const;
     bool operator>=(const MyString& comparableString) const;
     bool operator<=(const MyString& comparableString) const;
+
+    class StringException : public std::exception {
+        public:
+            StringException(unsigned int size, unsigned int idx);
+            virtual ~StringException() = default;
+        protected:
+            unsigned int _size;
+            unsigned int _idx;
+    };
+
+    class InsertException : public StringException {
+        public:
+            InsertException(unsigned int size, unsigned int idx);
+            ~InsertException() override = default;
+            const char* what() const noexcept override;
+    };
+    
+    class EraseException : public StringException {
+        public:
+            EraseException(unsigned int size, unsigned int idx);
+            ~EraseException() override = default;
+            const char* what() const noexcept override;
+    };
+
+    class AtException : public StringException {
+        public:
+            AtException(unsigned int size, unsigned int idx);
+            ~AtException() override = default;
+            const char* what() const noexcept override;
+    };
 private:
     StringData _data;
 };

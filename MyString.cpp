@@ -41,7 +41,7 @@ MyString& MyString::operator=(const MyString& other) {
 }
 
 MyString& MyString::operator=(MyString&& other) noexcept {
-    if (*this != other) {
+    if (this != &other) {
         _data = std::move(other._data);
     }
     return *this;
@@ -49,14 +49,14 @@ MyString& MyString::operator=(MyString&& other) noexcept {
 
 char& MyString::at(const unsigned int idx) {
     if (idx >= this->size()) {
-        throw std::out_of_range("At out of range");
+        throw MyString::AtException(size(), idx);
     }
     return _data.at(idx);
 }
 
 const char& MyString::at(const unsigned int idx) const {
     if (idx >= this->size()) {
-        throw std::out_of_range("At out of range");
+        throw MyString::AtException(size(), idx);
     }
     return _data.at(idx);
 }
@@ -68,7 +68,7 @@ void MyString::append(const MyString& appendedString) {
 
 void MyString::insert(unsigned int pos, const MyString& insertedString) {
     if (pos > this->size()) {
-        throw std::out_of_range("Insert out of range");
+        throw MyString::InsertException(size(), pos);
     }
     char* newData = new char[this->size() + insertedString.size()];
     for (size_t i = 0; i < this->size(); i++) {
@@ -93,7 +93,7 @@ void MyString::clear() {
 
 void MyString::erase(unsigned int pos, unsigned int count) {
     if (pos > this->size()) {
-        throw std::out_of_range("Erase out of range");
+        throw MyString::EraseException(size(), pos);
     }
     size_t realCount = count;
     if (count > this->size() - pos) {
